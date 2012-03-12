@@ -2,7 +2,7 @@
 (text between brackets to be removed)
 
 > * Group Name: (EpicDemics)
-> * Group participants names: (Pascal)
+> * Group participants names: (Christian Jordi, Yannick Schmid, Pascal Stücheli)
 > * Project Title: (can be changed)
 
 ## General Introduction
