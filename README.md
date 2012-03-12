@@ -1,8 +1,8 @@
-﻿# aMATLAB FS12 – Research Plan (Template)
+﻿# MATLAB FS12 – Research Plan (Template)
 (text between brackets to be removed)
 
 > * Group Name: (EpicDemics)
-> * Group participants names: (alphabetically sorted by last name)
+> * Group participants names: (Pascal)
 > * Project Title: (can be changed)
 
 ## General Introduction
