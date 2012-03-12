@@ -2,8 +2,8 @@
 (text between brackets to be removed)
 
 > * Group Name: (EpicDemics)
-> * Group participants names: (alphabetically sorted by last name)
-> * Project Title: (can be changed)
+> * Group participants names: Christian Jordi, Yannick Schmid, Pascal Stücheli
+> * Project Title: Epidemic_Simulation_SS2012
 
 ## General Introduction
 
