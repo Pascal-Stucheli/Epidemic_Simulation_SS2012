@@ -23,7 +23,7 @@ Project Title: Epidemic_Simulation_SS2012
 
 ## Expected Results
 
-Big fluctuations in the speed of the infection caused by the randomness of the model. Faster outbreak if the initial infection was placed in a hub, that had many interconnections with other hubs.
+ Big fluctuations in the speed of the infection caused by the randomness of the model. Faster outbreak if the initial infection was placed in a hub, that had many interconnections with other hubs.
 
 
 ## References 
