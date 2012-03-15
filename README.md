@@ -31,7 +31,7 @@ Big fluctuations in the speed of the infection caused by the randomness of the m
 We would like to try out our own modelling ideas. But we read different papers on this topic for inspiration.
 For example:
 D. Balcan et al.:Seasonal transmission potential and activity peaks of the new influenza A(H1N1): a Monte Carlo likelihood analysis based on human mobility.BMC Medicine 2009,7:45
-
+a
 
 ## Research Methods
 
