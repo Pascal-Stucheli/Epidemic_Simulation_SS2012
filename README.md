@@ -1,8 +1,8 @@
 ﻿# MATLAB FS12 – Research Plan 
 
-Group Name: EpicDemics
-Group participants names: Christian Jordi, Yannick Schmid, Pascal Stücheli
-Project Title: Epidemic_Simulation_SS2012
+> * Group Name: EpicDemics
+> * Group participants names: Christian Jordi, Yannick Schmid, Pascal Stücheli
+> * Project Title: Epidemic_Simulation_SS2012
 
 ## General Introduction
 
