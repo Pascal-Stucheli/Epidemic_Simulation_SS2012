@@ -6,14 +6,12 @@ Project Title: Epidemic_Simulation_SS2012
 
 ## General Introduction
 
-(States your motivation clearly: why is it important / interesting to solve this problem?)
-(Add real-world examples, if any)
-(Put the problem into a historical context, from what does it originate? Are there already some proposed solutions?)
+We want to simulate an epidemic outbreak. The use of this could be to identify weak spots in traffic and to find key points in fighting the outbreak.   
 
 ## The Model
 
-(Define dependent and independent variables you want to study. Say how you want to measure them.) (Why is your model a good abtraction of the problem you want to study?) (Are you capturing all the relevant aspects of the problem?)
-
+First step would be to create a random network of imaginary cities. We want to use real data from aviation and in a second step from road traffic. This data will be averaged with respect to the two connected cities.
+Second step would be to stochasticly simulate the outbreak in a random city. Each city will then be simulated and calculated how many infected die, how many travel and how many infect another person. 
 
 ## Fundamental Questions
 
