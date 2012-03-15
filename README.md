@@ -28,9 +28,9 @@ Project Title: Epidemic_Simulation_SS2012
 
 ## References 
 
-(Add the bibliographic references you intend to use)
-(Explain possible extension to the above models)
-(Code / Projects Reports of the previous year)
+We would like to try out our own modelling ideas. But we read different papers on this topic for inspiration.
+For example:
+D. Balcan et al.:Seasonal transmission potential and activity peaks of the new influenza A(H1N1): a Monte Carlo likelihood analysis based on human mobility.BMC Medicine 2009,7:45
 
 
 ## Research Methods
