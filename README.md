@@ -16,9 +16,6 @@ Second step would be to stochasticly simulate the outbreak in a random city. Eac
 ## Fundamental Questions
 
 As mentioned above, with the focus  on stochastics, we wand to investigate the impact of fluctuations on the outcome of a disease. How does the outcome of the disease changes with different simulations? How many people were infected during the simulations? The aim is to answer this question for the different cities we want to simulate. Furthermore, we are interested to see, how the disease spread in terms of means of transport. Additionally, different conditions could be tested (cities vs. villages, city with a dense public transport network vs. city with few public transport).
-(At the end of the project you want to find the answer to these questions)
-(Formulate a few, clear questions. Articulate them in sub-questions, from the more general to the more specific. )
-
 
 ## Expected Results
 
@@ -27,9 +24,9 @@ As mentioned above, with the focus  on stochastics, we wand to investigate the i
 
 ## References 
 
-(Add the bibliographic references you intend to use)
-(Explain possible extension to the above models)
-(Code / Projects Reports of the previous year)
+We would like to try out our own modelling ideas. But we read different papers on this topic for inspiration.
+For example:
+D. Balcan et al.:Seasonal transmission potential and activity peaks of the new influenza A(H1N1): a Monte Carlo likelihood analysis based on human mobility.BMC Medicine 2009,7:45
 
 
 ## Research Methods
