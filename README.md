@@ -19,8 +19,7 @@ As mentioned above, with the focus  on stochastics, we wand to investigate the i
 
 ## Expected Results
 
-(What are the answers to the above questions that you expect to find before starting your research?)
-
+ Big fluctuations in the speed of the infection caused by the randomness of the model. Faster outbreak if the initial infection was placed in a hub, that had many interconnections with other hubs.
 
 ## References 
 
