@@ -1,8 +1,8 @@
-﻿# MATLAB FS12 – Research Plan 
+﻿## MATLAB FS12 – Research Plan 
 
-Group Name: EpicDemics
-Group participants names: Christian Jordi, Yannick Schmid, Pascal Stücheli
-Project Title: Epidemic_Simulation_SS2012
+> * Group Name: EpicDemics
+> * Group participants names: Christian Jordi, Yannick Schmid, Pascal Stücheli
+> * Project Title: Epidemic_Simulation_SS2012
 
 ## General Introduction
 
@@ -17,18 +17,15 @@ Second step would be to stochasticly simulate the outbreak in a random city. Eac
 
 As mentioned above, with the focus  on stochastics, we wand to investigate the impact of fluctuations on the outcome of a disease. How does the outcome of the disease changes with different simulations? How many people were infected during the simulations? The aim is to answer this question for the different cities we want to simulate. Furthermore, we are interested to see, how the disease spread in terms of means of transport. Additionally, different conditions could be tested (cities vs. villages, city with a dense public transport network vs. city with few public transport).
 
-
-
 ## Expected Results
 
-(What are the answers to the above questions that you expect to find before starting your research?)
-
+Big fluctuations in the speed of the infection caused by the randomness of the model. Faster outbreak if the initial infection was placed in a hub, that had many interconnections with other hubs.
 
 ## References 
 
-(Add the bibliographic references you intend to use)
-(Explain possible extension to the above models)
-(Code / Projects Reports of the previous year)
+We would like to try out our own modelling ideas. But we read different papers on this topic for inspiration.
+For example:
+D. Balcan et al.:Seasonal transmission potential and activity peaks of the new influenza A(H1N1): a Monte Carlo likelihood analysis based on human mobility.BMC Medicine 2009,7:45
 
 
 ## Research Methods
