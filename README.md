@@ -1,4 +1,5 @@
-﻿## MATLAB FS12 – Research Plan 
+﻿
+## MATLAB FS12 – Research Plan 
 
 > * Group Name: EpicDemics
 > * Group participants names: Christian Jordi, Yannick Schmid, Pascal Stücheli
