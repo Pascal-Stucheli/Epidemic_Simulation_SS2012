@@ -10,8 +10,9 @@ We want to simulate an epidemic outbreak. The use of this could be to identify w
 
 ## The Model
 
-First step would be to create a random network of imaginary cities. We want to use real data from aviation and in a second step from road traffic. This data will be averaged with respect to the two connected cities.
-Second step would be to stochasticly simulate the outbreak in a random city. Each city will then be simulated and calculated how many infected die, how many travel and how many infect another person. 
+First step would be to create a random network of imaginary cities. We want to use real data from aviation and in a second step from road traffic. This data will be averaged with respect to the two connected cities, which means
+we have to categorize the citys in a defined number of city-categories. Second step would be to stochasticly simulate the outbreak in a random city. 
+Each city will then be simulated and calculated how many infected die, how many travel and how many infect another person. 
 
 ## Fundamental Questions
 
@@ -30,9 +31,13 @@ D. Balcan et al.:Seasonal transmission potential and activity peaks of the new i
 
 ## Research Methods
 
-(Cellular Automata, Agent-Based Model, Continuous Modeling...) (If you are not sure here: 1. Consult your colleagues, 2. ask the teachers, 3. remember that you can change it afterwards)
-
+SI - Model to start with. No recovered and also no dead. In a later step, depending on the perfomance of the 
+Model, we will decide to implement dead or recovered too. 
+The model will be random based stochastic working with different distributions (binomial, hypergeometric and normal).
+It will be a city based model.
 
 ## Other
 
-(mention datasets you are going to use)
+-- Air traffic data --
+http://www.transtats.bts.gov/Tables.asp?DB_ID=111&DB_Name=Air%20Carrier%20Statistics%20%28Form%2041%20Traffic%29-%20All%20Carriers&DB_Short_Name=Air%20Carriers
+  
