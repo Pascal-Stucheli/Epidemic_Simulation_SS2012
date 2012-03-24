@@ -1,9 +1,10 @@
+function hypergeometric
 %Hypergeometric testfunction
 clear all
 
 for X = 1:365 %for a whole year
-num_items = 1000000; %number of city inhabitants
-num_desired = 20; %number of sick
+num_items = 10000; %number of city inhabitants
+num_desired = 200; %number of sick
 draws = 200; %number of flights
 
 x(X)=hygeinv(rand,num_items,num_desired,draws); %number of flying sick
@@ -20,3 +21,4 @@ figure(1)
 plot(1:X,x,'.')
 figure(2)
 hist(x,10)
+end
