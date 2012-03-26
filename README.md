@@ -41,4 +41,6 @@ It will be a city based model.
 
 -- Air traffic data --
 http://www.transtats.bts.gov/Tables.asp?DB_ID=111&DB_Name=Air%20Carrier%20Statistics%20%28Form%2041%20Traffic%29-%20All%20Carriers&DB_Short_Name=Air%20Carriers
-  
+-- US Traffic data --
+http://www.bts.gov/publications/national_transportation_statistics/html/table_01_41.html
+http://www.bts.gov/publications/national_transportation_statistics/html/table_01_42.html  
