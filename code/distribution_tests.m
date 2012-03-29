@@ -2,6 +2,7 @@
 clear all
 
 hold on
+<<<<<<< HEAD
 for i = 1:10
     i
     Stot = 10000;
@@ -33,13 +34,28 @@ for i = 1:10
             end
             I = I+dI;
             S = S-dI;
+
         end
-        plot(t,I,'.b','MarkerSize',5)
-        %plot(t,S,'.r')
+        sig_dEdt2 = sqrt(dEdt2);
+        
+        dEdt1f = -1;
+        dEdt2f = -1;
+        while dEdt1f < 0 %random number has to be 0 or bigger
+            rn = randn; % standard normal random number
+            dEdt1f = round((dEdt1*dt+sig_dEdt1*rn));
+        end
+        while dEdt2f < 0
+            rn = randn;
+            dEdt2f = round((dEdt2*dt+sig_dEdt2*rn));
+        end
+        
+        E(j+1) = E(j)+dEdt1f-dEdt2f; % I_new = I_old + E(dI)*dt + std(dI)*sqrt(dt)*randn
+        I(j+1) = I(j)+dEdt2f;
+        t(j+1) = t(j)+dt; % update time
+        j=j+1; % uptdate counter
     end
+    
+    plot(t,I)
+    plot(t,E,'r')
 end
 hold off
-
-
-%as it seems 10x hypergeometric distributed randomvariables added is the
-%same as: hygernd(10*,10*,10*)

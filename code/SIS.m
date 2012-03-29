@@ -14,6 +14,7 @@ time=25;
 sim=4; % number of simulations
 for k=1:sim
     clear i
+    clear t
     j=1;
     i(j)=init;
     t(j)=dt;
