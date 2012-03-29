@@ -2,12 +2,12 @@
 clear all
 
 hold on
-for i = 1:1
+for i = 1:10
     i
     Stot = 10000;
     S = Stot;
     I = 1;
-    for t = 1:1:24*2 %each step one hour
+    for t = 1:1:24*365 %each step one hour
         if S > 0
             M = 0; %M is number of meetings with healthy people that occured in 1 hour totally
             meetings_tot = 0;
@@ -26,10 +26,11 @@ for i = 1:1
             else
                 M = round(binornd(meetings_tot,S/Stot)); %this consumes much time
             end
-            if M > S
-                M = S;
-            end
+            
             dI = binornd(M,0.05);
+            if dI > S
+                dI = S;
+            end
             I = I+dI;
             S = S-dI;
         end
