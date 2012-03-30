@@ -2,9 +2,11 @@
 
 clear all
 hold on
-for i = 1:100
+for i = 1:1
+   
+    %% Initialization
     t(1) = 0;
-    tend = 24*7*2; %endtime hours
+    tend = 24*2; %endtime in hours
     dt = 1; %timesteps in hours
     counter = 1;
     
@@ -13,31 +15,37 @@ for i = 1:100
     meetings_stdev = 13/24*dt; %66 percent of meetings par day are in mean +- stdev range
     meetings_mean = 13/24*dt; %meetings per day calculated to dt proportional
     inf_prob = 0.08; %infection probability on meeting event
+    %%
     
     while t(counter) < tend %simulate for whole time
+        %% calculate the total numbers of meeting events
         
-        %calculate the total numbers of meeting events
-        mtt = 0; %total number of meeting events
-        for it = 1:I(counter)
-            randpart = -1;
-            while randpart < 0 %randompart hast to be >= 0
-                randpart = round(randn*meetings_stdev + meetings_mean); %normally distributed random part
-            end
-            mtt = mtt + randpart;
+        mtt = -1; %total number of meeting events
+        while mtt < 0 %no negative number of meetings allowed
+        mtt = round(randn*I(counter)*meetings_stdev + meetings_mean*I(counter)); %sum of randn can be added like this
         end
-        
-        %calculate how many of the meeting events happened to Susceptible
-        if mtt > 0 %further calculation only if meetings happen
-            mtS = binornd(mtt,(N-I(counter))/N);
             
-            %calculate how many of the meetings result in an infection
-            if mtS > 0 %further calculation only if meetings happen
-                dI = binornd(mtS, inf_prob);
-            else dI = 0;
-            end
+        %% calculate how many of the meeting events happened to Susceptible and how many of them 
+        %really got infected
+        
+        if mtt > 0 %further calculation only if meetings happen
+            dI = binornd(mtt,((N-I(counter))/N)*inf_prob); %probability can be combined in just one binornd
+            %to calculate how many of the meetings happen to Susceptible
+            %AND how many of those got infected
+            
+            % ----->>>> term missing for multiple infections of one person
+            % what is the chance that an infection got on a person which
+            % already got infected. 0 for first, 1/S for second 2/S for
+            % third.... I don't know how to approximate this. I think this
+            % combined probability is not binomial but hypergeometric.
+            % because you don't lay it back after you have taken it. each
+            % meeting which causes an infection to happen will be taken
+            % away.
             
         else dI = 0;
         end
+        
+        %% Update and plot
         
         I(counter + 1) = I(counter) + dI; %update number of infected
         
@@ -50,12 +58,15 @@ for i = 1:100
         
     end
     
-    plot(t,I)
-    meanI(i,:) = I;
+    plot(t,I,'b')
+   % meanI(i,:) = I;
     
 end
+
+%plot(t,mean(meanI),'r')
 hold off
-plot(t,mean(meanI),'r')
+
+%% Appendix
 
 
 % function to test the distribution of random normal distribution
