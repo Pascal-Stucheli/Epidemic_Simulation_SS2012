@@ -2,7 +2,7 @@
 clear all
 
 hold on
-<<<<<<< HEAD
+
 for i = 1:10
     i
     Stot = 10000;
@@ -22,10 +22,14 @@ for i = 1:10
                 %then with this calculate hypergeometric distributed randomnumber of
                 %meetings with healthy.
             end
+            var=meetings_tot*(S/Stot)*(1-S/Stot);
             if meetings_tot == 0
                 M = 0;
+           
+            elseif var >9
+                    M = round(rand(meetings_tot,sqrt(var)))
             else
-                M = round(binornd(meetings_tot,S/Stot)); %this consumes much time
+                M = binornd(meetings_tot,S/Stot); %this consumes much time        
             end
             
             dI = binornd(M,0.05);
@@ -36,26 +40,10 @@ for i = 1:10
             S = S-dI;
 
         end
-        sig_dEdt2 = sqrt(dEdt2);
         
-        dEdt1f = -1;
-        dEdt2f = -1;
-        while dEdt1f < 0 %random number has to be 0 or bigger
-            rn = randn; % standard normal random number
-            dEdt1f = round((dEdt1*dt+sig_dEdt1*rn));
-        end
-        while dEdt2f < 0
-            rn = randn;
-            dEdt2f = round((dEdt2*dt+sig_dEdt2*rn));
-        end
-        
-        E(j+1) = E(j)+dEdt1f-dEdt2f; % I_new = I_old + E(dI)*dt + std(dI)*sqrt(dt)*randn
-        I(j+1) = I(j)+dEdt2f;
-        t(j+1) = t(j)+dt; % update time
-        j=j+1; % uptdate counter
     end
     
     plot(t,I)
-    plot(t,E,'r')
+   
 end
 hold off

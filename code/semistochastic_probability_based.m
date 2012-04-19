@@ -1,10 +1,14 @@
 %Disease spreading SI model
-
 clear all
+starttime = cputime;
+timenormal = 0;
+timebinomial = 0;
 hold on
 for i = 1:100
+   
+    %% Initialization
     t(1) = 0;
-    tend = 24*7*2; %endtime hours
+    tend = 24*7; %endtime in hours
     dt = 1; %timesteps in hours
     counter = 1;
     
@@ -13,31 +17,34 @@ for i = 1:100
     meetings_stdev = 13/24*dt; %66 percent of meetings par day are in mean +- stdev range
     meetings_mean = 13/24*dt; %meetings per day calculated to dt proportional
     inf_prob = 0.08; %infection probability on meeting event
+    %%
     
     while t(counter) < tend %simulate for whole time
+        %% calculate the total numbers of meeting events
         
-        %calculate the total numbers of meeting events
-        mtt = 0; %total number of meeting events
-        for it = 1:I(counter)
-            randpart = -1;
-            while randpart < 0 %randompart hast to be >= 0
-                randpart = round(randn*meetings_stdev + meetings_mean); %normally distributed random part
-            end
-            mtt = mtt + randpart;
+        tnorm1 = cputime;
+        mtt = -1; %total number of meeting events
+        while mtt < 0 %no negative number of meetings allowed
+        mtt = round(randn*I(counter)*meetings_stdev + meetings_mean*I(counter)); %sum of randn can be added like this
         end
+        timenormal = timenormal + cputime - tnorm1;
+            
+        %% calculate how many of the meeting events happened to Susceptible and how many of them 
+        %really got infected
         
-        %calculate how many of the meeting events happened to Susceptible
         if mtt > 0 %further calculation only if meetings happen
-            mtS = binornd(mtt,(N-I(counter))/N);
-            
-            %calculate how many of the meetings result in an infection
-            if mtS > 0 %further calculation only if meetings happen
-                dI = binornd(mtS, inf_prob);
-            else dI = 0;
+            tbino1 = cputime;
+            dI = 0;
+            mtS = binornd(mtt,((N-I(counter))/N)*inf_prob); %probability can be combined in just one binornd
+            for q = 1:mtS
+               dI = dI + binornd(1,1-dI/(N-I(counter))); %probability reduced because of multiple infections of the same person 
             end
-            
+            timebinomial = timebinomial + cputime - tbino1;
+                        
         else dI = 0;
         end
+        
+        %% Update and plot
         
         I(counter + 1) = I(counter) + dI; %update number of infected
         
@@ -50,12 +57,18 @@ for i = 1:100
         
     end
     
-    plot(t,I)
-    meanI(i,:) = I;
+   %plot(t,I,'r')
+   meanI(i,:) = I;
     
 end
+
+plot(t,mean(meanI),'b')
 hold off
-plot(t,mean(meanI),'r')
+totaltime = cputime - starttime
+timenormal/totaltime*100
+timebinomial/totaltime*100
+timebinomial
+%% Appendix
 
 
 % function to test the distribution of random normal distribution
@@ -70,3 +83,19 @@ plot(t,mean(meanI),'r')
 % end
 % end
 % hist(randpartt,100)
+
+
+% for r = 1:1000
+% dI(r) = 0;
+%  for q = 1:400
+% dI(r) = dI(r) + binornd(1,1-dI(r)/(200)); %probability reduced because of multiple infections of the same person 
+% end
+% end
+% figure(1)
+% hist(dI)
+% for r = 1:1000
+% dg(r) = 0;
+% dg(r) = binornd(q,(1-199/200)/2);
+% end
+% figure(2)
+% hist(dg)
