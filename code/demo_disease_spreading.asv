@@ -25,21 +25,21 @@ CITIES_ARRAY = [
 hold on
 while t < runtime
     
-%     plot(t/24,CITIES_ARRAY(1,2),'.r')
-%     plot(t/24,CITIES_ARRAY(2,2),'.b')
-%     plot(t/24,CITIES_ARRAY(3,2),'.g')
-%     plot(t/24,CITIES_ARRAY(4,2),'.y')
-%     
+    plot(t/24,CITIES_ARRAY(1,2),'.r')
+    plot(t/24,CITIES_ARRAY(2,2),'.b')
+    plot(t/24,CITIES_ARRAY(3,2),'.g')
+    plot(t/24,CITIES_ARRAY(4,2),'.y')
+    
     %1. Step Traffic
     
-    %CITIES_ARRAY = Simulate_Traffic(CITIES_ARRAY,dt);
+    CITIES_ARRAY = Simulate_Traffic(CITIES_ARRAY,dt);
     
     %2. Step Infection
     
-    CITIES_ARRAY = Simulate_Infection(CITIES_ARRAY,dt,meeting_events_mean,meeting_events_stdev,infection_prob,t);
+    CITIES_ARRAY = Simulate_Infection(CITIES_ARRAY,dt,meeting_events_mean,meeting_events_stdev,infection_prob);
     
     % Time update
-    t = t + dt
+    t = t + dt;
 end
 hold off
 
@@ -72,7 +72,7 @@ end
 
 end
 
-function CITIES_ARRAY = Simulate_Infection(CITIES_ARRAY,dt,meeting_events_mean,meeting_events_stdev,infection_prob,t)
+function CITIES_ARRAY = Simulate_Infection(CITIES_ARRAY,dt,meeting_events_mean,meeting_events_stdev,infection_prob)
 
 meetings_stdev = meeting_events_stdev/24*dt; %66 percent of meetings par day are in mean +- stdev range
 meetings_mean = meeting_events_mean/24*dt; %meetings per day calculated to dt proportional
@@ -95,9 +95,9 @@ meeting_susceptible = binornd(meeting_events,(CITIES_ARRAY(n,1)-CITIES_ARRAY(n,2
 %                 end
             end
             if meeting_susceptible > 0
-                dI = binornd(meeting_susceptible,infection_prob);  
-    plot(t,abs((CITIES_ARRAY(n,1)-CITIES_ARRAY(n,2))/(CITIES_ARRAY(n,1)-CITIES_ARRAY(n,2)-meeting_susceptible)),'.b')
-    
+                if meeting_susceptible/(CITIES_ARRAY(n,1)-CITIES_ARRAY(n,2)) > 1
+                       end
+                dI = binornd(meeting_susceptible,infection_prob);            
             else dI = 0;
             end
             
@@ -107,7 +107,7 @@ meeting_susceptible = binornd(meeting_events,(CITIES_ARRAY(n,1)-CITIES_ARRAY(n,2
         CITIES_ARRAY(n,2)  = CITIES_ARRAY(n,2) + dI;
         if CITIES_ARRAY(n,2) > CITIES_ARRAY(n,1) %not more infected possible than whole population
             CITIES_ARRAY(n,2) = CITIES_ARRAY(n,1);
-        end                
+        end
     end
 end
 
