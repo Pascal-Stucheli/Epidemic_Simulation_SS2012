@@ -4,7 +4,7 @@
 clear all  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%to be removed
 
 %Parameters
-ncit= 2000; %number of cities
+ncit= 20000; %number of cities
 
 %variables
 seeded = [1 5; 2 3; 4 5;4 3];%seed for the edges
@@ -21,6 +21,7 @@ linkage=0; %Determines wether a new edge has been set
 %functions
 while pos < ncit
     pos= pos+1;
+    posed=length(edge)+1;
     linkage=0;
     
     while linkage ~= mlinks %true as long as the new edge has not been set
@@ -32,15 +33,24 @@ while pos < ncit
                                    % (mlinks=1) the oher two conditions do not matter
             cities(pos,1)=1; %degree of the new introduced city is set to 1
             cities(rnode,1)=cities(rnode,1)+1; %The deg of the chosen city is increased by one
-            edge(pos,1)=rnode; %stores the new edge
-            edge(pos,2)=pos;
+            edge(posed,1)=rnode; %stores the new edge
+            edge(posed,2)=pos;
             sumlinks=length(edge(:,1));
             linkage=linkage+1;
          end
     end
 end
-
+%bring data in a form gephi can understand
 edgecell=num2cell(edge);
-cell2csv('network.csv', edgecell, [], 2007, [])
-cities
-edge
+
+for i=1:length(edgecell)
+    edgecell2{i+1,1}=edgecell{i,1};
+    edgecell2{i+1,2}=edgecell{i,2};
+    edgecell2{i+1,3}='undirected';
+end
+
+edgecell2{1,1}='source';
+edgecell2{1,2}='target';
+edgecell2{1,3}='type';
+
+cell2csv('network.csv', edgecell2, [], 2007, [])
