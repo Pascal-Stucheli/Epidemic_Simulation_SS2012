@@ -25,11 +25,11 @@ CITIES_ARRAY = [
 hold on
 while t < runtime
     
-%     plot(t/24,CITIES_ARRAY(1,2),'.r')
-%     plot(t/24,CITIES_ARRAY(2,2),'.b')
-%     plot(t/24,CITIES_ARRAY(3,2),'.g')
-%     plot(t/24,CITIES_ARRAY(4,2),'.y')
-%     
+        
+         plot(t,CITIES_ARRAY(2,2),'.b')
+    %     plot(t/24,CITIES_ARRAY(3,2),'.g')
+    %     plot(t/24,CITIES_ARRAY(4,2),'.y')
+    %
     %1. Step Traffic
     
     %CITIES_ARRAY = Simulate_Traffic(CITIES_ARRAY,dt);
@@ -39,6 +39,8 @@ while t < runtime
     CITIES_ARRAY = Simulate_Infection(CITIES_ARRAY,dt,meeting_events_mean,meeting_events_stdev,infection_prob,t);
     
     % Time update
+    CITIES_ARRAY(1,2)
+    plot(t,CITIES_ARRAY(1,2),'.r')
     t = t + dt
 end
 hold off
@@ -78,36 +80,30 @@ meetings_stdev = meeting_events_stdev/24*dt; %66 percent of meetings par day are
 meetings_mean = meeting_events_mean/24*dt; %meetings per day calculated to dt proportional
 
 for n = 1:length(CITIES_ARRAY(:,1))
-    if CITIES_ARRAY(n,2) > 0 && CITIES_ARRAY(n,1)-CITIES_ARRAY(n,2) > 0
+    infected = CITIES_ARRAY(n,2);
+    susceptible = (CITIES_ARRAY(n,1)-infected);
+    if infected > 0 && susceptible > 0
         meeting_events = -1; %total number of meeting events
         while meeting_events < 0 %no negative number of meetings allowed
-            meeting_events = round(randn*CITIES_ARRAY(n,2)*meetings_stdev + meetings_mean*CITIES_ARRAY(n,2)); %sum of randn can be added like this
+            meeting_events = round(randn*infected*meetings_stdev + meetings_mean*infected); %sum of randn can be added like this
         end
         if meeting_events > 0 %further calculation only if meetings happen
-            if meeting_events < 0.1*CITIES_ARRAY(n,1)-CITIES_ARRAY(n,2)
-                meeting_susceptible = binornd(meeting_events,(CITIES_ARRAY(n,1)-CITIES_ARRAY(n,2))/CITIES_ARRAY(n,1)); %probability can be combined in just one binornd
-            else
-%                 if meeting_events > 1
-meeting_susceptible = binornd(meeting_events,(CITIES_ARRAY(n,1)-CITIES_ARRAY(n,2))/CITIES_ARRAY(n,1)); %probability can be combined in just one binornd
-                    %meeting_susceptible = round(hygestat(CITIES_ARRAY(n,1),CITIES_ARRAY(n,1)-CITIES_ARRAY(n,2),meeting_events)); %probability can be combined in just one binornd
-%                 else
-%                     meeting_susceptible = hygernd(CITIES_ARRAY(n,1),CITIES_ARRAY(n,1)-CITIES_ARRAY(n,2),meeting_events); %probability can be combined in just one binornd
-%                 end
-            end
+            meeting_susceptible = binornd(meeting_events,susceptible/CITIES_ARRAY(n,1)); %probability can be combined in just one binornd
             if meeting_susceptible > 0
-                dI = binornd(meeting_susceptible,infection_prob);  
-    plot(t,abs((CITIES_ARRAY(n,1)-CITIES_ARRAY(n,2))/(CITIES_ARRAY(n,1)-CITIES_ARRAY(n,2)-meeting_susceptible)),'.b')
-    
+                min_meeting_per_sus = floor(meeting_susceptible/susceptible);
+                sus_meeting_max = meeting_susceptible - min_meeting_per_sus*susceptible;
+                sus_meeting_min = susceptible - sus_meeting_max;
+                dI1 = binornd(sus_meeting_min,1-(1-infection_prob)^min_meeting_per_sus);
+                dI2 = binornd(sus_meeting_max,1-(1-infection_prob)^(1+min_meeting_per_sus));
+                dI = dI1 + dI2;
             else dI = 0;
             end
-            
         else dI = 0;
         end
-        
         CITIES_ARRAY(n,2)  = CITIES_ARRAY(n,2) + dI;
         if CITIES_ARRAY(n,2) > CITIES_ARRAY(n,1) %not more infected possible than whole population
             CITIES_ARRAY(n,2) = CITIES_ARRAY(n,1);
-        end                
+        end
     end
 end
 
