@@ -55,4 +55,6 @@ edgecell2{1,1}='source';
 edgecell2{1,2}='target';
 edgecell2{1,3}='type';
 
-cell2csv('network2.csv', edgecell2, [], 2007, [])
+%Save the data
+cell2csv('smallernetwork.csv', edgecell2, [], 2007, [])
+dlmwrite('cities.txt',cities);
