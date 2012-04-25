@@ -1,0 +1,16 @@
+%Summary of the functions needed to create our start network. bcs
+%everything needed is stored in .txt or .csv files. -> has only to be
+%executed once
+
+
+function[]=Initialisation()
+
+ncit=100; %num
+
+networkepid(ncit)
+
+city_size
+
+%%%%%%%%%%%%%%%add yannicks file for the flux size
+
+end

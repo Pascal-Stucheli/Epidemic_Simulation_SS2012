@@ -2,14 +2,15 @@
 
 %to execute this file you need an existing cities.txt file, that can be
 %created by the networkepid.m file
-clear all
+
+function[]=city_size(cities)
 
   %new idea: use zipfs law:
  %http://www.dbresearch.de/PROD/DBR_INTERNET_DE-PROD/PROD0000000000242036/Die+seltsam+stabile+Gr%C3%B6%C3%9Fenstruktur+deutscher+St%C3%A4dte.pdf
  %Rang=alpha*E^-betha
  %ln(R)=ln(a)-ln(E)*b -> ln(a)= 18.6 b=1.23
  %->ln(E)=-ln(R/a)/b
- cities=dlmread('cities.txt');
+ %cities=dlmread('cities.txt');
  
  %rank the cities depending on degree
  rank=zeros(length(cities(:,1)),1);
@@ -48,8 +49,10 @@ clear all
  %the parameters should be adjusted to allow smaller cities, or the number
  %of cities has to be increased
  
- %Total Population Around 54M
+ %Total Population Around 54M (at a size of 1000)
  total=sum(cities(:,2))
  
  %Export modified file back
  dlmwrite('cities.txt',cities);
+ 
+end
