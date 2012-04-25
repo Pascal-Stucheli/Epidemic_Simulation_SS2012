@@ -31,10 +31,10 @@ for	i = 1:length(edges)
     % This is also based on our assumption that the number of voyagers in both direction of an edge is the same (ASSUMPTION 1).
     % (ASSUMPTION 1 is important to keep the population in the cities constant).
     if	N(x) < N(y)
-        tot_T(i) = round(trsp_xy * N(x));
+        tot_T(i) = round(trsp_xy * 1/k(x) * N(x));
         
     else % would be N(y) < N(x) or N(x) = N(y)
-        tot_T(i) = round(trsp_xy * N(y));
+        tot_T(i) = round(trsp_xy * 1/k(y) * N(y));
         
     end
     
