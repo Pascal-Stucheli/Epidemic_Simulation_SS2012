@@ -1,9 +1,9 @@
 %DEMO DISEASE SPREADING
 
-function demo_disease_spreading %mainfunction to execute everything
+function outputvar = demo_disease_spreading %mainfunction to execute everything
 
 clear all;
-profile on
+%profile on
 %parameter definition
 
 dt = 2; %hours
@@ -21,26 +21,19 @@ CITIES_ARRAY = [
     100000, 0, 1, 10, 4, 10, 0, 0;
     100000, 0, 2, 10, 3, 10, 0, 0;
     100000, 0, 1, 10, 6, 10, 0, 0;
-
     100000, 0, 5, 10, 7, 10, 0, 0;
     100000, 0, 6, 10, 8, 10, 0, 0;
     100000, 0, 7, 10, 9, 10, 0, 0;
     100000, 0, 8, 10, 0, 0, 0, 0];
 
 %main step runs through the whole time
-hold on
+g = 1;
 while t < runtime
-      
-    plot(t,CITIES_ARRAY(2,2),'.b')
-    plot(t,CITIES_ARRAY(1,2),'.r')
-    plot(t,CITIES_ARRAY(3,2),'.g')
-    plot(t,CITIES_ARRAY(4,2),'.y')
-    plot(t,CITIES_ARRAY(5,2),'.b')
-    plot(t,CITIES_ARRAY(6,2),'.r')
-    plot(t,CITIES_ARRAY(7,2),'.g')
-    plot(t,CITIES_ARRAY(8,2),'.y')
-    plot(t,CITIES_ARRAY(9,2),'.b')
-  
+    
+    outputvar{1}(:,g) = CITIES_ARRAY(:,1);
+    outputvar{2}(:,g) = CITIES_ARRAY(:,2);
+    outputvar{3}(1,g) = t;
+     
     %1. Step Traffic
     
     CITIES_ARRAY = Simulate_Traffic(CITIES_ARRAY,dt);
@@ -52,10 +45,15 @@ while t < runtime
     % Time update
         
     t = t + dt;
+    g = g +1;
 end
-ylim([0 101000])
-hold off
-profile viewer
+
+% hold on
+% for i = 1:length(outputvar{1}(:,1))
+% plot(outputvar{3},outputvar{2}(i,:))
+% end
+% hold off
+% profile viewer
 end
 
 function CITIES_ARRAY = Simulate_Traffic(CITIES_ARRAY,dt)
