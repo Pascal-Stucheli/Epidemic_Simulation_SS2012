@@ -4,7 +4,7 @@
 clear all  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%to be removed ->insert function definition here
 
 %Parameters
-ncit= 1000; %number of cities
+ncit= 100; %number of cities
 
 %variables
 seeded = [1 5; 2 3; 4 5;4 3];%seed for the edges
@@ -56,5 +56,6 @@ edgecell2{1,2}='target';
 edgecell2{1,3}='type';
 
 %Save the data
-cell2csv('smallernetwork.csv', edgecell2, [], 2007, [])
+cell2csv('smallernetwork100.csv', edgecell2, [], 2007, [])
 dlmwrite('cities.txt',cities);
+dlmwrite('edges.txt',edge);
