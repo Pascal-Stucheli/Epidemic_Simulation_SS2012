@@ -1,0 +1,7 @@
+test_transport_edges: Testet die unten beschriebenen Funktionen und zeigt, dass 1. Transport von Personen stattfindet und 2. dass die Bevölkerung in den Städten gleich bleibt.
+
+transport_with_rnd_tot_T: Diese Funktion berechnet alles, inklusive die totale Anzahl Reisende (jede Runde!!) mit einer normal verteilten Zufallsvariabel.
+
+gererate_fixed_tot_T: Generiert den Vektor tot_T, der die gesamt Anzahl reisender Personen fix berechnet (anstatt wie oben jede Runde), jedoch ohne normal verteilte Zufallsvariabel.
+
+transport_with_fixed_tot_T: Benutzt tot_T aus der obigen Funktion, ansonsten analog zu transport_with_rnd_tot_T.
