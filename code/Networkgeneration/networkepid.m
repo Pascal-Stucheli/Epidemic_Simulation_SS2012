@@ -1,7 +1,7 @@
 %20.4.2012 Christian Jordi
 %Generation of a scale free network
 
-function[cities]=networkepid(ncit,seeded,seedct)
+function[cities,edges]=networkepid(ncit,seeded,seedct)
 
 clear all  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%to be removed ->insert function definition here
 
