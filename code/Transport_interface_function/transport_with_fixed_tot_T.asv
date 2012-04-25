@@ -3,7 +3,6 @@ function cities = transport_with_fixed_tot_T(cities,edges,tot_T)
 
 I = cities(:,3); % Infected
 S = cities(:,2)-I; % Susceptibles
-
 N = cities(:,2);	 % Total population
 
 % Transport matrix

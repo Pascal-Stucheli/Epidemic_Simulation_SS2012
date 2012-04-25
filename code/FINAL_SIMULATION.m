@@ -12,6 +12,7 @@ profile on
 
 cities = dlmread('cities.txt');
 edges = dlmread('edges.txt');
+tot_T = dlmread('tot_T.txt');
 
 
 %parameter definition
@@ -31,7 +32,7 @@ while t < runtime
     
     %1. Step Traffic
     
-    %cities = Simulate_Traffic(cities,dt);
+    cities = transport_with_fixed_tot_T(cities,edges,tot_T);
     
     %2. Step Infection
     
@@ -56,31 +57,6 @@ end
 hold off
 
 end
-
-function CITIES_ARRAY = Simulate_Traffic(CITIES_ARRAY,dt)
-        
-        for n = 1:length(CITIES_ARRAY(:,1)) %simulate traffic for each city
-            g = 4; %set array position where connection information starts
-            while g <= length(CITIES_ARRAY(1,:)) && CITIES_ARRAY(n,g) > 0
-                if CITIES_ARRAY(n,2) > 0 %if there are any infected
-                    travelling_infected = binornd(round(CITIES_ARRAY(n,g)/24*dt),CITIES_ARRAY(n,2)/CITIES_ARRAY(n,1));
-                    if travelling_infected > CITIES_ARRAY(n,g)
-                        travelling_infected = CITIES_ARRAY(n,g);
-                    end
-                    CITIES_ARRAY(CITIES_ARRAY(n,g-1),2) = CITIES_ARRAY(CITIES_ARRAY(n,g-1),2) + travelling_infected;
-                    CITIES_ARRAY(n,2) = CITIES_ARRAY(n,2) - travelling_infected;
-                    %update infected population
-                else
-                    travelling_infected = 0;
-                end
-                CITIES_ARRAY(CITIES_ARRAY(n,g-1),1) = CITIES_ARRAY(CITIES_ARRAY(n,g-1),1) + round(CITIES_ARRAY(n,g)/24*dt);
-                CITIES_ARRAY(n,1) = CITIES_ARRAY(n,1) - round(CITIES_ARRAY(n,g)/24*dt);
-                %update total population
-                %update total population
-                g = g + 2;
-            end
-        end
-    end
 
 function cities = Simulate_Infection(cities,dt,meeting_events_mean,meeting_events_stdev,infection_prob,t)
         
