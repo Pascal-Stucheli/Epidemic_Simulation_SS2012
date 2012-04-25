@@ -1,9 +1,10 @@
-function [S_T, I_T] = transport_with_fixed_tot_T(cities,edges,tot_T)
+function cities = transport_with_fixed_tot_T(cities,edges,tot_T)
 % This function is meant to be the interface between the network and the disease simulation.
 
-S = cities(:,2); % Susceptibles
 I = cities(:,3); % Infected
-N = S + I;	 % Total population
+S = cities(:,2)-I; % Susceptibles
+
+N = cities(:,2);	 % Total population
 
 % Transport matrix
 T = zeros(length(edges),2); 	% col1: Infected voyagers going x -> y; col2: Infected voyagers going y -> x)
@@ -48,5 +49,6 @@ for	i = 1:length(edges)
     clear x y % for next round -> may cause problems & ev. not necessary!!!
     
 end
+cities(:,3) = cities(:,3)+I_T;
 
 end

@@ -2,9 +2,10 @@ function tot_T = generate_fixed_tot_T(cities,edges,dt)
 % This function is meant to be the interface between the network and the disease simulation.
 
 k = cities(:,1); % degree
-N = cities(:,2); % Susceptibles
+
+N = cities(:,2); % Total population
 I = cities(:,3); % Infected
-S = N - I;	 % Total population
+S = N - I;	 % Total p
 
 k_mean = mean(k);
 
