@@ -18,6 +18,6 @@ tot_T = generate_fixed_tot_T(cities,edge,dt);
 
 dlmwrite('tot_T.txt',tot_T);
 
-
+%%%%%Add infection...
 
 end
