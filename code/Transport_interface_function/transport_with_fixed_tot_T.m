@@ -1,19 +1,13 @@
 function cities = transport_with_fixed_tot_T(cities,edges,tot_T)
 % This function is meant to be the interface between the network and the disease simulation.
 
-I = cities(:,3); % Infected
-S = cities(:,2)-I; % Susceptibles
-
-N = cities(:,2);	 % Total population
+N = cities(:,2);    % Total population
+I = cities(:,3);    % Infected
+S = N-I;            % Susceptibles
 
 % Transport matrix
-T = zeros(length(edges),2); 	% col1: Infected voyagers going x -> y; col2: Infected voyagers going y -> x)
-
-% Change-of-population-caused-by-transport vector
-S_T = zeros(length(cities),1);
-I_T = zeros(length(cities),1);
-
-
+% col1: Infected voyagers going x -> y; col2: Infected voyagers going y -> x
+T = zeros(length(edges(:,2)),2);
 
 for	i = 1:length(edges)
     
@@ -21,34 +15,53 @@ for	i = 1:length(edges)
     y = edges(i,2);
     
     % in order to reduce unused computational efforts -> only calculate transport if at
-    %least one city at the end of the edge has infected people.
-    if I(x) | I(y) > 0
+    % least one city at the end of the edge has infected people. Also, no
+    % transport between fully infected cities.
+    
+    if I(x) > 0 || I(y) > 0
         
-        % We assume that the number of infected voyagers is binomial distributed with n = T(i,1) and p = I(x or y)/N(x or y)
-        %
-        T(i,1) = binornd(tot_T(i),I(x)/N(x)); % Infected voyagers traveling from x to y.
-        T(i,2) = binornd(tot_T(i),I(y)/N(y)); % "	     "	      "		"    y to x.
+        if N(x) - I(x) ~= 0 && N(y) - I(y) ~= 0
+            
+            % We assume that the number of infected voyagers is binomial distributed with n = T(i,1) and p = I(x or y)/N(x or y)
+            %
+            T(i,1) = binornd(tot_T(i),I(x)/N(x)); % Infected voyagers traveling from x to y.
+            T(i,2) = binornd(tot_T(i),I(y)/N(y)); % "	     "	      "		"    y to x.
+            
+        else T(i,:) = 0;
+            
+        end
         
     else T(i,:) = 0;
         
     end
+        
+        % Calculate changes of S and I of city x and y and update.
+        
+        % Derivation: Sx: Total S of city x, Ix: Total I of city x, TS_x-y:
+        % S leaving city x, TI_x-y: I leaving city x. Same for city y, Txy:
+        % Total voyagers (= TS_xy + TI_xy)
+        % Sx = Sx,old - TS_x-y + TI_y-x = Sx,old - (Txy - TI_x-y) + (Txy -
+        % TI_y-x) = Sx,old + TI_x-y - TI_y-x
+        
+        %S_T(x) = S_T(x) + T(i,1) - T(i,2);
+        I(x) = I(x) + T(i,2) - T(i,1); % Update number of infected in city x
+        %S_T(y) = S_T(y) + T(i,2) - T(i,1);
+        I(y) = I(y) + T(i,1) - T(i,2); % Update number of infected in city y
+        
+        % With the binomial assumption a infected person can be drawn more than
+        % one time per round, therefore negative I(x or y) must avoided:
+        if I(x) < 0
+            I(x) = 0;
+        end
+        
+        if I(y) < 0
+            I(y) = 0;
+        end
+        
+        clear x y % for next round -> may cause problems & ev. not necessary!!!
+        
+    end
     
-    % Calculate changes of S and I of city x and y and update.
+    cities(:,3) = I; % Update cities matrix.
     
-    % Derivation: Sx: Total S of city x, Ix: Total I of city x, TS_x-y:
-    % S leaving city x, TI_x-y: I leaving city x. Same for city y, Txy:
-    % Total voyagers (= TS_xy + TI_xy)
-    % Sx = Sx,old - TS_x-y + TI_y-x = Sx,old - (Txy - TI_x-y) + (Txy -
-    % TI_y-x) = Sx,old + TI_x-y - TI_y-x
-    S_T(x) = S_T(x) + T(i,1) - T(i,2);
-    I_T(x) = I_T(x) + T(i,2) - T(i,1);
-    
-    S_T(y) = S_T(y) + T(i,2) - T(i,1);
-    I_T(y) = I_T(y) + T(i,1) - T(i,2);
-    
-    clear x y % for next round -> may cause problems & ev. not necessary!!!
-    
-end
-cities(:,3) = cities(:,3)+I_T;
-
 end
