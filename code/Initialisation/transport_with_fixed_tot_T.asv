@@ -27,18 +27,12 @@ for	i = 1:length(edges)
             if I(x) > 0
                 [mean, var] = hygestat(N(x),I(x),tot_T(i)); 
                 T(i,1) = abs(round(randn*sqrt(var) + mean));
-                if T(i,1) > tot_T(i)
-                    T(i,1) = tot_T(i);
-                end
                 %T(i,1) = binornd(tot_T(i),I(x)/N(x)); % Infected voyagers traveling from x to y.
             end
             if I(y) > 0
                 
                 [mean, var] = hygestat(N(y),I(y),tot_T(i)); 
                 T(i,2) = abs(round(randn*sqrt(var) + mean));
-                if T(i,2) > tot_T(i)
-                    T(i,2) = tot_T(i);
-                end
             %T(i,2) = binornd(tot_T(i),I(y)/N(y)); % "	     "	      "		"    y to x.
             end
         
@@ -74,13 +68,7 @@ for	i = 1:length(edges)
             I(y) = 0;
         end 
         
-        if I(x) > N(x) 
-            I(x) = N(x)
-        end
-        
-        if I(y) > N(y) 
-            I(y) = N(y)
-        end
+        if I(x) > 
         
         clear x y % for next round -> may cause problems & ev. not necessary!!!
         
