@@ -7,36 +7,36 @@ clear all;
 %parameter definition
 
 dt = 2; %hours
-runtime = 24*7*8; %hours
+runtime = 24*7*7; %hours
 t = 0; %initialization
-meeting_events_mean = 13;%per day
-meeting_events_stdev = 13;%per day
-infection_prob = 0.08; %infection probability on meeting event
+meeting_events_mean = 7.5;%per day
+meeting_events_stdev = 7;%per day
+infection_prob = 0.01; %infection probability on meeting event
 
 %create demo network
 %inhabitants, sick, (connection city, people transfer)
 CITIES_ARRAY = [
-    100000, 1, 2, 10, 3, 10, 5, 10;
-    100000, 0, 1, 10, 4, 10, 0, 0;
-    100000, 0, 1, 10, 4, 10, 0, 0;
-    100000, 0, 2, 10, 3, 10, 0, 0;
-    100000, 0, 1, 10, 6, 10, 0, 0;
-    100000, 0, 5, 10, 7, 10, 0, 0;
-    100000, 0, 6, 10, 8, 10, 0, 0;
-    100000, 0, 7, 10, 9, 10, 0, 0;
-    100000, 0, 8, 10, 0, 0, 0, 0];
+    0,100000, 50, 2, 10, 3, 10, 5, 10;
+    0,100000, 0, 1, 10, 4, 10, 0, 0;
+    0,100000, 0, 1, 10, 4, 10, 0, 0;
+    0,100000, 0, 2, 10, 3, 10, 0, 0;
+    0,100000, 0, 1, 10, 6, 10, 0, 0;
+    0,100000, 0, 5, 10, 7, 10, 0, 0;
+    0,100000, 0, 6, 10, 8, 10, 0, 0;
+    0,100000, 0, 7, 10, 9, 10, 0, 0;
+    0,100000, 0, 8, 10, 0, 0, 0, 0];
 
 %main step runs through the whole time
 g = 1;
 while t < runtime
     
-    outputvar{1}(:,g) = CITIES_ARRAY(:,1);
-    outputvar{2}(:,g) = CITIES_ARRAY(:,2);
+    outputvar{1}(:,g) = CITIES_ARRAY(:,2);
+    outputvar{2}(:,g) = CITIES_ARRAY(:,3);
     outputvar{3}(1,g) = t;
      
     %1. Step Traffic
     
-    CITIES_ARRAY = Simulate_Traffic(CITIES_ARRAY,dt);
+    %CITIES_ARRAY = Simulate_Traffic(CITIES_ARRAY,dt);
     
     %2. Step Infection
     
@@ -83,46 +83,43 @@ end
 
 function CITIES_ARRAY = Simulate_Infection(CITIES_ARRAY,dt,meeting_events_mean,meeting_events_stdev,infection_prob,t)
 
-meetings_stdev = meeting_events_stdev/24*dt; %66 percent of meetings par day are in mean +- stdev range
-meetings_mean = meeting_events_mean/24*dt; %meetings per day calculated to dt proportional
-
-for n = 1:length(CITIES_ARRAY(:,1))
-    infected = CITIES_ARRAY(n,2);
-    susceptible = (CITIES_ARRAY(n,1)-infected);
-    
-    if infected > 0 && susceptible > 0 %don't go on if there are no infected or no susceptibles left
-        meeting_events = round(abs(randn*meetings_stdev*infected + meetings_mean*infected)); %calculate the meeting events
-        dI = binornd(meeting_events, infection_prob*susceptible/(susceptible+infected)); %approximate how many of these meetings result in an infection
-        %probability = infection_prob*part of susceptible in population
-        %not approximated method attached in the end
-        CITIES_ARRAY(n,2)  = infected+dI; %update population
-        if CITIES_ARRAY(n,2) > CITIES_ARRAY(n,1) %not more infected possible than whole population
-            CITIES_ARRAY(n,2) = CITIES_ARRAY(n,1);
+cities = CITIES_ARRAY;
+ meetings_stdev = meeting_events_stdev/24*dt; %66 percent of meetings par day are in mean +- stdev range
+        meetings_mean = meeting_events_mean/24*dt; %meetings per day calculated to dt proportional
+        number_of_cities = length(cities(:,1));
+        
+        for n = 1:number_of_cities
+            
+            infected = cities(n,3);
+            susceptible = (cities(n,2)-infected);
+            
+            if infected > 0 && susceptible > 0 %don't go on if there are no infected or no susceptibles left
+                
+                if infected < 10000 %if this holds calculate stochastic
+                    meeting_events = round(abs(randn*meetings_stdev*infected + meetings_mean*infected)); %calculate the meeting events
+                    dI = binornd(meeting_events, infection_prob*susceptible/(susceptible+infected)); %approximate how many of these meetings result in an infection
+                    %probability = infection_prob*part of susceptible in population
+                    %not approximated method attached in the end
+                    cities(n,3) = infected + dI; %update population
+                    
+                    if cities(n,3) > cities(n,2) %not more infected possible than whole population
+                        cities(n,3) = cities(n,2);
+                    end
+                    
+                else %if infected > 10000 deterministic approximation
+                    meeting_events = round(abs(randn*meetings_stdev*infected + meetings_mean*infected)); %calculate the meeting events
+                    dI = ceil(meeting_events*infection_prob*susceptible/(susceptible+infected)); %approximate how many of these meetings result in an infection
+                    %probability = infection_prob*part of susceptible in population
+                    %not approximated method attached in the end
+                    cities(n,3) = infected + dI; %update population
+                    
+                    if cities(n,3) > cities(n,2) %not more infected possible than whole population
+                        cities(n,3) = cities(n,2);
+                    end
+                end
+                
+           
         end
-    end
+        end
+CITIES_ARRAY = cities;
 end
-
-end
-
-%non-approximated method for infection spreading
-%         for i = 1:infected
-%
-%            meeting_events = round(abs(randn*meetings_stdev + meetings_mean));
-%             if meeting_events > 0
-%
-%                 for m = 1:meeting_events
-%                     if susceptible > 0;
-%                         if rand < susceptible/(infected+susceptible)*infection_prob;
-%                             infected = infected + 1;
-%                             susceptible = susceptible - 1;
-%                         end
-%                     end
-%                     if susceptible < 1
-%                         break
-%                     end
-%                 end
-%            end
-%          end
-%         if susceptible < 1
-%             break
-%         end

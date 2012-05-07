@@ -19,11 +19,11 @@ tot_T = dlmread('tot_T.txt');
 %parameter definition
 
 dt = 2; %hours
-runtime = 24*7; %hours
+runtime = 24*7*3; %hours
 t = 0; %initialization
-meeting_events_mean = 13;%per day
-meeting_events_stdev = 13;%per day
-infection_prob = 0.08; %infection probability on meeting event
+meeting_events_mean = 7.5;%per day
+meeting_events_stdev = 7;%per day
+infection_prob = 0.01; %infection probability on meeting event
 g = 1;
 output_array = zeros(length(cities(:,1)),runtime/dt);
 
@@ -72,7 +72,7 @@ function cities = Simulate_Infection(cities,dt,meeting_events_mean,meeting_event
             
             if infected > 0 && susceptible > 0 %don't go on if there are no infected or no susceptibles left
                 
-                if infected < 1000 %if this holds calculate stochastic
+                if infected < 10000 %if this holds calculate stochastic
                     meeting_events = round(abs(randn*meetings_stdev*infected + meetings_mean*infected)); %calculate the meeting events
                     dI = binornd(meeting_events, infection_prob*susceptible/(susceptible+infected)); %approximate how many of these meetings result in an infection
                     %probability = infection_prob*part of susceptible in population
@@ -83,7 +83,7 @@ function cities = Simulate_Infection(cities,dt,meeting_events_mean,meeting_event
                         cities(n,3) = cities(n,2);
                     end
                     
-                else %if infected > 1000 deterministic approximation
+                else %if infected > 10000 deterministic approximation
                     meeting_events = round(abs(randn*meetings_stdev*infected + meetings_mean*infected)); %calculate the meeting events
                     dI = ceil(meeting_events*infection_prob*susceptible/(susceptible+infected)); %approximate how many of these meetings result in an infection
                     %probability = infection_prob*part of susceptible in population
