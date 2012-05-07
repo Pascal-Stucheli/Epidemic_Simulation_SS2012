@@ -1,15 +1,15 @@
 function cities = transport_with_fixed_tot_T(cities,edges,tot_T)
 % This function is meant to be the interface between the network and the disease simulation.
 
-N = cities(:,2); % Total population
-I = cities(:,3); % Infected
-S = N-I; % Susceptibles
+N = cities(:,2);    % Total population
+I = cities(:,3);    % Infected
+S = N-I;            % Susceptibles
 
 % Transport matrix
 % col1: Infected voyagers going x -> y; col2: Infected voyagers going y -> x
 T = zeros(length(edges(:,2)),2);
 
-for i = 1:length(edges)
+for	i = 1:length(edges)
     
     x = edges(i,1); % It is not necessary to define x and y but it may helps with the overview
     y = edges(i,2);
@@ -25,15 +25,15 @@ for i = 1:length(edges)
             % We assume that the number of infected voyagers is binomial distributed with n = T(i,1) and p = I(x or y)/N(x or y)
             %
             if I(x) > 0
-                [mean, var] = hygestat(N(x),I(x),tot_T(i));
+                [mean, var] = hygestat(N(x),I(x),tot_T(i)); 
                 T(i,1) = abs(round(randn*sqrt(var) + mean));
                 %T(i,1) = binornd(tot_T(i),I(x)/N(x)); % Infected voyagers traveling from x to y.
             end
             if I(y) > 0
                 
-                [mean, var] = hygestat(N(y),I(y),tot_T(i));
+                [mean, var] = hygestat(N(y),I(y),tot_T(i)); 
                 T(i,2) = abs(round(randn*sqrt(var) + mean));
-            %T(i,2) = binornd(tot_T(i),I(y)/N(y)); % " " " " y to x.
+            %T(i,2) = binornd(tot_T(i),I(y)/N(y)); % "	     "	      "		"    y to x.
             end
         
             
@@ -66,9 +66,9 @@ for i = 1:length(edges)
         
         if I(y) < 0
             I(y) = 0;
-        end
+        end 
         
-        if I(x) >
+        if I(x) > 
         
         clear x y % for next round -> may cause problems & ev. not necessary!!!
         
