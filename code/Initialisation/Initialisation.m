@@ -9,7 +9,7 @@
 
 function[]=Initialisation()
 
-ncit = 100; %number of cities in the Network
+ncit = 10000; %number of cities in the Network
 seeded = [1 5; 2 3; 4 5;4 3];%seed for the edges
 seedct = [1 0 0;1 0 0;1 0 0;1 0 0;2 0 0]; %seed for the cities
 dt=2; %2hours

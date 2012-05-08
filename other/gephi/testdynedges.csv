@@ -1,0 +1,6 @@
+Source;Target;type
+1;5;undirectional
+1;2;undirectional
+2;3;undirectional
+3;4;undirectional
+4;5;undirectional
