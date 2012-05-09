@@ -18,7 +18,7 @@ tot_T = dlmread('tot_T.txt');
 
 %parameter definition
 dt = 2; %hours
-runtime = 24*7*3; %hours
+runtime = 24*7*4*6; %hours
 t = 0; %initialization
 meeting_events_mean = 7.5;%per day
 meeting_events_stdev = 7;%per day

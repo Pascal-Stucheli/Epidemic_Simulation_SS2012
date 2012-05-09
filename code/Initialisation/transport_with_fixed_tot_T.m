@@ -68,7 +68,13 @@ for i = 1:length(edges)
             I(y) = 0;
         end
         
-        if I(x) >
+        if I(x) > N(x)
+            I(x)=N(x)
+        end
+        
+         if I(y) > N(y)
+            I(y)=N(y)
+         end
         
         clear x y % for next round -> may cause problems & ev. not necessary!!!
         
