@@ -24,17 +24,17 @@ for i = 1:length(edges)
             
             % We assume that the number of infected voyagers is binomial distributed with n = T(i,1) and p = I(x or y)/N(x or y)
             %
-            if I(x) > 0
+             if I(x) > 0
                 [mean, var] = hygestat(N(x),I(x),tot_T(i));
                 T(i,1) = abs(round(randn*sqrt(var) + mean));
                 %T(i,1) = binornd(tot_T(i),I(x)/N(x)); % Infected voyagers traveling from x to y.
-            end
-            if I(y) > 0
+             end
+             if I(y) > 0
                 
                 [mean, var] = hygestat(N(y),I(y),tot_T(i));
                 T(i,2) = abs(round(randn*sqrt(var) + mean));
             %T(i,2) = binornd(tot_T(i),I(y)/N(y)); % " " " " y to x.
-            end
+           end
         
             
         else T(i,:) = 0;
@@ -62,6 +62,7 @@ for i = 1:length(edges)
         % one time per round, therefore negative I(x or y) must avoided:
         if I(x) < 0
             I(x) = 0;
+            
         end
         
         if I(y) < 0
@@ -69,14 +70,12 @@ for i = 1:length(edges)
         end
         
         if I(x) > N(x)
-            I(x)=N(x)
+            I(x)=N(x);
         end
         
          if I(y) > N(y)
-            I(y)=N(y)
+            I(y)=N(y);
          end
-        
-        clear x y % for next round -> may cause problems & ev. not necessary!!!
         
     end
     
