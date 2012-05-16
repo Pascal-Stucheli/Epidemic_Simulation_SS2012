@@ -13,16 +13,16 @@ profile on
 cities = dlmread('cities.txt');
 cities(1,3)=1;
 edges = dlmread('edges.txt');
-tot_T = dlmread('tot_T.txt');
+tot_T = round(dlmread('tot_T.txt')/100);
 
 
 %parameter definition
 dt = 2; %hours
-runtime = 24*7*4*6; %hours
+runtime = 24*7*4; %hours
 t = 0; %initialization
 meeting_events_mean = 7.5;%per day
 meeting_events_stdev = 7;%per day
-infection_prob = 0.01; %infection probability on meeting even
+infection_prob = 0.05; %infection probability on meeting event
 g = 1;
 output_array = zeros(length(cities(:,1)),runtime/dt);
 
