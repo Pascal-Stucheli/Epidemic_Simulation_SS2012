@@ -70,11 +70,11 @@ for i = 1:length(edges)
     end
     
     if I(x) > N(x)
-        I(x)=N(x)
+        I(x)=N(x);
     end
     
     if I(y) > N(y)
-        I(y)=N(y)
+        I(y)=N(y);
     end
     
 end

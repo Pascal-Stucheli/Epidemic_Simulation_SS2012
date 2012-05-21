@@ -14,11 +14,11 @@ cities = dlmread('cities.txt');
 cities(1,3)=1;
 edges = dlmread('edges.txt');
 tot_T = round(dlmread('tot_T.txt')/100);
-
+tot_pop=sum(cities(:,2));
 
 %parameter definition
 dt = 2; %hours
-runtime = 24*7*4; %hours
+runtime = 24*100; %hours
 t = 0; %initialization
 meeting_events_mean = 7.5;%per day
 meeting_events_stdev = 7;%per day
@@ -40,13 +40,16 @@ while t < runtime
     
     % Time update
     output_array(:,g) = cities(:,3);
-    t = t + dt;
+    t = t + dt
     g = g + 1;
+    totinfect(g)=sum(cities(:,3))/tot_pop;
+    totinfect(g)
 end
 
-out_file_name = 'outt.txt';
+out_file_name = 'outtfinal.txt';
 out_file_name(4) = int2str(5);
 dlmwrite(out_file_name,output_array);
+dlmwrite('ratio.txt',totinfect);
 
 profile viewer
 
