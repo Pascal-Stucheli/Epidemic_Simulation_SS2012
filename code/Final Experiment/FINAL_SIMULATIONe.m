@@ -2,7 +2,7 @@
 
 function FINAL_SIMULATIONd
 
-parfor b=1:1
+parfor b=1:300
     
     %load network
     
@@ -40,16 +40,19 @@ parfor b=1:1
         
         % Time update
         output_array(:,g) = cities(:,3);
-        t = t + dt;
         g = g + 1;
-        if find(cities(:,3))>=20
-            
+        if length(find(cities(:,3)))>=20
+            generate_output(output_array, tot_pop, cities, root,edges,b,t)
+            break
+        end
+        t = t + dt;
+
     end
     
     %  out_file_name = 'exp21.txt';
     %  out_file_name(5) = int2str(b);
     %  dlmwrite(out_file_name,output_array);
-    generate_output(output_array, tot_pop,cities,root,edges,b);
+    %generate_output(output_array, tot_pop,cities,root,edges,b);
     
 end
 end
@@ -185,26 +188,9 @@ cities(:,3) = I; % Update cities matrix.
 
 end
 
-function generate_output(output_array, tot_pop, cities, root,edges,b)
+function generate_output(output_array, tot_pop, cities, root,edges,b,t)
 
 bstr = int2str(b);
-
-%calculate and produce file for number of cities with at least 20% infected
-percent_20_infected(length(output_array(1,:)))=0;
-min_20_percent = 0;
-n = 0;
-for i = 1:length(output_array(1,:))
-    percent_20_infected(i)=0;
-    for g = 1:length(output_array(:,1))
-        if output_array(g,i)/cities(g,2) >= 0.2
-            percent_20_infected(i) = percent_20_infected(i) + 1;
-        end
-    end
-    if percent_20_infected(i) >= 100 && n == 0;
-        min_20_percent = i;
-        n = n + 1;
-    end
-end
 
 %calculate degree of root node and 1st generation neighborhood
 connections = find(edges == root);
@@ -221,8 +207,8 @@ for i = 1:length(connections)
     tot_degree = tot_degree + cities(working_node,1);
 end
 output_degree(1) = tot_degree;
-output_degree(2) = min_20_percent;
-degree_corr_name='degre2_corr000.txt';
+output_degree(2) = t;
+degree_corr_name='degre3_corr000.txt';
 degree_corr_name(15-length(bstr):14)=bstr;
 dlmwrite(degree_corr_name,output_degree);
 
