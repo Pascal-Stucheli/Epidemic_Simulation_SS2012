@@ -2,7 +2,7 @@
 
 function FINAL_SIMULATIONd
 
-parfor b=1:2
+parfor b=1:50
     
     %load network
     
@@ -17,7 +17,7 @@ parfor b=1:2
     
     %parameter definition
     dt = 2; %hours
-    runtime = 24*7; %hours
+    runtime = 24*80; %hours
     t = 0; %initialization
     meeting_events_mean = 7.5;%per day
     meeting_events_stdev = 7;%per day

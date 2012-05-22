@@ -1,10 +1,11 @@
 %20.4.2012 Christian Jordi
 %Generation of a scale free network
 
-function[cities,edges]=networkepid(ncit,seeded,seedct)
+function[cities,edge]=networkepid(ncit,seeded,seedct)
 
 %Parameters
-ncit= 100; %number of cities
+%ncit= 100; %number of cities
+
 %variables
 %seeded = [1 5; 2 3; 4 5;4 3];%seed for the edges
 %seedct = [1 0 0;1 0 0;1 0 0;1 0 0;2 0 0]; %seed for the cities
