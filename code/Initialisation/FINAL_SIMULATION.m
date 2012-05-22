@@ -62,8 +62,7 @@ hold off
 end
 
 function cities = Simulate_Infection(cities,dt,meeting_events_mean,meeting_events_stdev,infection_prob,t)
-        
-        meetings_stdev = meeting_events_stdev/24*dt; %66 percent of meetings par day are in mean +- stdev range
+meetings_stdev = meeting_events_stdev/24*dt; %66 percent of meetings par day are in mean +- stdev range
         meetings_mean = meeting_events_mean/24*dt; %meetings per day calculated to dt proportional
         number_of_cities = length(cities(:,1));
         
