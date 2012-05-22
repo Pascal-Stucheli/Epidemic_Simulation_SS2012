@@ -120,20 +120,38 @@ clear all
 %     end
 % end
 
+% n = 1;
+% degre2_correlation = [0 0];
+% for i = 1:999
+%     try
+%         bstr = int2str(i);
+%         degre2_corr_name='degre2_corr000.txt';
+%         degre2_corr_name(15-length(bstr):14)=bstr;
+%         degre2_correlation(n,:) = dlmread(degre2_corr_name);
+%         n = n + 1;
+%     end
+% end
+% figure(4)
+% hold on
+% plot(degre2_correlation(:,2),(degre2_correlation(:,1)),'.b')
+% t = 350:0.1:650;
+% q = 10.^(t.*(-0.0026)+2.7849);
+% plot(t,q)
+
 n = 1;
-degre2_correlation = [0 0];
+degre3_correlation = [0 0];
 for i = 1:999
     try
         bstr = int2str(i);
-        degre2_corr_name='degre2_corr000.txt';
-        degre2_corr_name(15-length(bstr):14)=bstr;
-        degre2_correlation(n,:) = dlmread(degre2_corr_name);
+        degre3_corr_name='degre4_corr000.txt';
+        degre3_corr_name(15-length(bstr):14)=bstr;
+        degre3_correlation(n,:) = dlmread(degre3_corr_name);
         n = n + 1;
     end
 end
 figure(4)
 hold on
-plot(degre2_correlation(:,2),(degre2_correlation(:,1)),'.b')
-t = 350:0.1:650;
-q = 10.^(t.*(-0.0026)+2.7849);
-plot(t,q)
+plot(degre3_correlation(:,2),(degre3_correlation(:,1)),'.b')
+% t = 350:0.1:650;
+% q = 10.^(t.*(-0.0026)+2.7849);
+% plot(t,q)

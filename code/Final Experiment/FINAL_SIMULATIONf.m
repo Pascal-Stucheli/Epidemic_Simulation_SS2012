@@ -2,7 +2,7 @@
 
 function FINAL_SIMULATIONd
 
-parfor b=1:300
+parfor b=2:2
     
     %load network
     
@@ -10,10 +10,24 @@ parfor b=1:300
     
     %Set random infection for this experiment
     root= unidrnd(length(cities(:,1)));
+    target_city = root;
+    while target_city == root
+        target_city = unidrnd(length(cities(:,1)));
+    end
+    
     cities(root,3)=1;
     
     edges = dlmread('edges.txt');
     tot_T = round(dlmread('tot_T.txt')/100);
+    
+    testmatrix = zeros(10000,10000);
+    for i = 1:length(edges)
+        testmatrix(edges(i,1),edges(i,2))=1;
+        testmatrix(edges(i,2),edges(i,1))=1;        
+    end
+    testsparse = sparse(testmatrix);
+    distance = graphshortestpath(testsparse,root,target_city)
+    
     
     %parameter definition
     dt = 2; %hours
@@ -41,12 +55,12 @@ parfor b=1:300
         % Time update
         output_array(:,g) = cities(:,3);
         g = g + 1;
-        if length(find(cities(:,3)))>=10
-            generate_output(output_array, tot_pop, cities, root,edges,b,t)
+        if cities(target_city,3) > 0
+            generate_output(output_array, tot_pop, cities, root,edges,b,t,distance)
             break
         end
         t = t + dt;
-
+        
     end
     
     %  out_file_name = 'exp21.txt';
@@ -188,7 +202,7 @@ cities(:,3) = I; % Update cities matrix.
 
 end
 
-function generate_output(output_array, tot_pop, cities, root,edges,b,t)
+function generate_output(output_array, tot_pop, cities, root,edges,b,t, distance)
 
 bstr = int2str(b);
 
@@ -206,7 +220,7 @@ tot_degree = cities(root,1);
 %     end
 %     tot_degree = tot_degree + cities(working_node,1);
 % end
-output_degree(1) = tot_degree;
+output_degree(1) = distance;
 output_degree(2) = t;
 degree_corr_name='degre4_corr000.txt';
 degree_corr_name(15-length(bstr):14)=bstr;
