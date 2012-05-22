@@ -9,9 +9,9 @@
 
 %function[]=output2gexf()
 
-infected=dlmread('out5.txt'); %Problem!!! contains NaN...
+infected=dlmread('exp21.txt'); %Problem!!! contains NaN...
 
-gefx=importdata('dynamic10k.gexf');
+gefx=importdata('dyndemo500.gexf');
 
 cities=dlmread('cities.txt');
 
@@ -42,7 +42,7 @@ q=1;
 
 while q<=timesteps
     infected2(:,h)=infected(:,q);
-    q=round(q+cities/60);
+    q=round(q+cities/30);
     h=h+1;
 end
 infected=infected2;
@@ -50,12 +50,12 @@ timesteps=length(infected(1,:))
 
 %strings needed for search and the insertion of the data
 
-target='      <node id="1" start="0.0">';
+target='      <node id="1" start="1.0">';
 data='          <attvalue for="Infected" value="000000000000" start="0000.0" endopen="0000.0"></attvalue>';
 findata='          <attvalue for="Infected" value="000000000000" start="0000.0"></attvalue>';
 
 %lgefx2=length(gefx)+cities*timesteps;
-gefx2=cell(250000,1);
+gefx2=cell(10000,1);
 
 pos=1;
 pos2=1;
@@ -123,12 +123,12 @@ end
 %Copies the rest of the template gexf
 
 for y=0:length(gefx)-pos
-gefx2{pos2+y}=gefx{pos+y};
+gefx2{pos2+y-1}=gefx{pos+y};
 end
 
 %The collected data is now exported into a new gexf file
 
-file_1 = fopen('try2.gexf','w');
+file_1 = fopen('500dynamic.gexf','w');
 
 for u=1:length(gefx2)
     fprintf(file_1,gefx2{u}); 

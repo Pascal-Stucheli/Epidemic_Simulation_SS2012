@@ -6,7 +6,7 @@
   </meta>
   <graph defaultedgetype="undirected" timeformat="double" mode="dynamic">
     <attributes class="node" mode="dynamic">
-      <attribute id="Infected" title="Infected" type="integer"></attribute>
+      <attribute id="Infected" title="Infected" type="double"></attribute>
     </attributes>
     <attributes class="edge" mode="dynamic">
       <attribute id="weight" title="Weight" type="float"></attribute>
