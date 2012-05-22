@@ -7,7 +7,7 @@
 %optional a file containing the total population of all the cities
 
 
-%function[]=output2gexf()
+function[]=output2gexf()
 
 infected=dlmread('exp21.txt'); %Problem!!! contains NaN...
 
@@ -42,7 +42,7 @@ q=1;
 
 while q<=timesteps
     infected2(:,h)=infected(:,q);
-    q=round(q+cities/30);
+    q=round(q+cities/70);
     h=h+1;
 end
 infected=infected2;
@@ -137,4 +137,4 @@ end
 
 fclose(file_1)
 
-%end
+end
