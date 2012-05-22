@@ -13,16 +13,16 @@ profile on
 cities = dlmread('cities.txt');
 cities(1,3)=1;
 edges = dlmread('edges.txt');
-tot_T = dlmread('tot_T.txt');
-
+tot_T = round(dlmread('tot_T.txt')/100);
+tot_pop=sum(cities(:,2));
 
 %parameter definition
 dt = 2; %hours
-runtime = 24*365; %hours
+runtime = 24*100; %hours
 t = 0; %initialization
-meeting_events_mean = 9.5;%per day
-meeting_events_stdev = 9.5;%per day
-infection_prob = 0.02; %infection probability on meeting even
+meeting_events_mean = 7.5;%per day
+meeting_events_stdev = 7;%per day
+infection_prob = 0.05; %infection probability on meeting event
 g = 1;
 output_array = zeros(length(cities(:,1)),runtime/dt);
 
@@ -40,29 +40,29 @@ while t < runtime
     
     % Time update
     output_array(:,g) = cities(:,3);
-    t = t + dt;
+    t = t + dt
     g = g + 1;
+    totinfect(g)=sum(cities(:,3))/tot_pop;
+    totinfect(g)
 end
 
-out_file_name = 'outt.txt';
+out_file_name = 'outtfinal.txt';
 out_file_name(4) = int2str(5);
 dlmwrite(out_file_name,output_array);
+dlmwrite('ratio.txt',totinfect);
 
 profile viewer
 
 hold on
 for i = 1:100
 plot(output_array(i,:),'b')
-s = output_array(i,:);
 end
-sum(s)
 hold off
 
 end
 
 function cities = Simulate_Infection(cities,dt,meeting_events_mean,meeting_events_stdev,infection_prob,t)
-        
-        meetings_stdev = meeting_events_stdev/24*dt; %66 percent of meetings par day are in mean +- stdev range
+meetings_stdev = meeting_events_stdev/24*dt; %66 percent of meetings par day are in mean +- stdev range
         meetings_mean = meeting_events_mean/24*dt; %meetings per day calculated to dt proportional
         number_of_cities = length(cities(:,1));
         

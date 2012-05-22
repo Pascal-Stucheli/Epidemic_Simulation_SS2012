@@ -69,7 +69,7 @@ edgecell2{1,2}='target';
 edgecell2{1,3}='type';
 
 %Save the data
-cell2csv('smallernetwork100loop.csv', edgecell2, [], 2007, [])
+cell2csv('smallernetwork10kfinalloop.csv', edgecell2, [], 2007, [])
 dlmwrite('edges.txt',edge);
 
 end
