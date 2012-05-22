@@ -131,4 +131,9 @@ for i = 1:999
         n = n + 1;
     end
 end
-plot(degre2_correlation(:,2),degre2_correlation(:,1),'.b')
+figure(4)
+hold on
+plot(degre2_correlation(:,2),(degre2_correlation(:,1)),'.b')
+t = 350:0.1:650;
+q = 10.^(t.*(-0.0026)+2.7849);
+plot(t,q)
