@@ -217,7 +217,7 @@ percentage_name(14-length(bstr):13)=bstr;
 dlmwrite(percentage_name,percent_20_infected);
 
 %calculate degree of root node and 1st generation neighborhood
-connections = find(edges == root)
+connections = find(edges == root);
 tot_degree = cities(root,1);
 for i = 1:length(connections)
     if connections(i) > length(edges) 
