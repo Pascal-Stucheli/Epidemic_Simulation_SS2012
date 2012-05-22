@@ -18,11 +18,11 @@ tot_T = dlmread('tot_T.txt');
 
 %parameter definition
 dt = 2; %hours
-runtime = 24*7*3; %hours
+runtime = 24*365; %hours
 t = 0; %initialization
-meeting_events_mean = 7.5;%per day
-meeting_events_stdev = 7;%per day
-infection_prob = 0.01; %infection probability on meeting even
+meeting_events_mean = 9.5;%per day
+meeting_events_stdev = 9.5;%per day
+infection_prob = 0.02; %infection probability on meeting even
 g = 1;
 output_array = zeros(length(cities(:,1)),runtime/dt);
 
@@ -53,7 +53,9 @@ profile viewer
 hold on
 for i = 1:100
 plot(output_array(i,:),'b')
+s = output_array(i,:);
 end
+sum(s)
 hold off
 
 end
