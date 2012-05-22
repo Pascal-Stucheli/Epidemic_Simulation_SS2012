@@ -2,7 +2,8 @@
 
 function FINAL_SIMULATIONd
 
-parfor b=1:1
+<<<<<<< HEAD
+parfor b=51:100
     
     %load network
     
