@@ -237,7 +237,7 @@ for i = 1:length(connections)
 end
 output_degree(1) = tot_degree;
 output_degree(2) = t;
-degree_corr_name='degre5_corr000.txt';
+degree_corr_name='degre4_corr000.txt';
 degree_corr_name(15-length(bstr):14)=bstr;
 dlmwrite(degree_corr_name,output_degree);
 
