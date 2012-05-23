@@ -2,8 +2,7 @@
 
 function FINAL_SIMULATIONf
 
-
-parfor b=1:200
+parfor b=1:80
     
     
     %load network
@@ -13,7 +12,7 @@ parfor b=1:200
     tot_T = round(dlmread('tot_T.txt')/100);
     distance = 4;
     
-    while distance >= 3 && distance <= 7
+    %while distance >= 3 && distance <= 7
         cities = dlmread('cities.txt');
         
         %Set random infection for this experiment
@@ -33,7 +32,7 @@ parfor b=1:200
         
         distance = graphshortestpath(testsparse,root,target_city)
         testsparse = 0;
-    end
+    %end
 
     
     %parameter definition
@@ -76,6 +75,7 @@ parfor b=1:200
     %generate_output(output_array, tot_pop,cities,root,edges,b);
     
 end
+
 end
 
 function cities = Simulate_Infection(cities,dt,meeting_events_mean,meeting_events_stdev,infection_prob,t)
@@ -129,6 +129,15 @@ S = N-I; % Susceptibles
 % Transport matrix
 % col1: Infected voyagers going x -> y; col2: Infected voyagers going y -> x
 T = zeros(length(edges(:,2)),2);
+
+%unsort edges
+for i = 1:length(edges)
+   r(1) = ceil(rand*length(edges)); 
+   r(2) = ceil(rand*length(edges));
+   temp_edges = edges(r(1),:);
+   edges(r(1),:) = edges(r(2),:);
+   edges(r(2),:) = temp_edges;
+end
 
 for i = 1:length(edges)
     
@@ -229,7 +238,7 @@ tot_degree = cities(root,1);
 % end
 output_degree(1) = distance;
 output_degree(2) = t;
-degree_corr_name='degre4_corr000.txt';
+degree_corr_name='degre5_corr000.txt';
 degree_corr_name(15-length(bstr):14)=bstr;
 dlmwrite(degree_corr_name,output_degree);
 
