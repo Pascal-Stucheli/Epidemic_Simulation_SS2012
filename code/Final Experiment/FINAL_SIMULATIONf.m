@@ -2,7 +2,9 @@
 
 function FINAL_SIMULATIONf
 
+
 parfor b=500:600
+
     
     %load network
     
