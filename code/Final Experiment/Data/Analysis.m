@@ -151,7 +151,8 @@ for i = 1:999
 end
 figure(4)
 hold on
-plot(degre3_correlation(:,2),(degre3_correlation(:,1)),'.b')
-% t = 350:0.1:650;
-% q = 10.^(t.*(-0.0026)+2.7849);
-% plot(t,q)
+plot(degre3_correlation(:,1),(degre3_correlation(:,2)),'.b')
+
+d = 1:0.1:8;
+q = 10.^(d.*(-0.0230)+2.693);
+plot(d,q)
