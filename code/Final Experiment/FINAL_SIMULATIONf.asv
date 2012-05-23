@@ -3,7 +3,7 @@
 function FINAL_SIMULATIONf
 
 
-parfor b=700:800
+parfor b=500:600
 
     
     %load network
@@ -11,7 +11,6 @@ parfor b=700:800
     cities = dlmread('cities.txt');
         edges = dlmread('edges.txt');
     tot_T = round(dlmread('tot_T.txt')/100);
-    distance = 4;
     
     while distance >= 4 && distance <= 6
     
