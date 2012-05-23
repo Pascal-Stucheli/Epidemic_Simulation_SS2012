@@ -152,20 +152,9 @@ end
 figure(4)
 hold on
 for i = 1:8
-    finder = find(degre3_correlation==i);
-    for q = 1:length(finder)
-       if finder(q) > length(degre3_correlation)
-           finder(q) = finder(q) - length(degre3_correlation);
-       end
-    end
-    g{i} = degre3_correlation(finder(:),2);
+    a{i} = degre3_correlation(find(degre3_correlation==i),:);
 end
-for i = 1:8
-   e(i) = median(g{i});
-   f(i) = mean(g{i});
-  % plot(i,e(i),'*r')
-   plot(i,f(i),'*r')
-end
+
 plot((degre3_correlation(:,1)),(degre3_correlation(:,2)),'.b')
 
 d = 1:0.1:9;
