@@ -2,7 +2,7 @@
 
 function FINAL_SIMULATIONd
 
-parfor b=2:2
+parfor b=600:700
     
     %load network
     
