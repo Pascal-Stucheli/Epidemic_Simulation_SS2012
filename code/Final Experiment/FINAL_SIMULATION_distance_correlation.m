@@ -1,23 +1,43 @@
 % Final Simulation
 
-function FINAL_SIMULATIONc
+function FINAL_SIMULATION_distance_correlation
 
-parfor b=1:2
+parfor b=1:80
+    
     
     %load network
     
-    cities = dlmread('cities.txt');
-    
-    %Set random infection for this experiment
-    root= unidrnd(length(cities(:,1)));
-    cities(root,3)=1;
     
     edges = dlmread('edges.txt');
     tot_T = round(dlmread('tot_T.txt')/100);
+    distance = 4;
+    
+    %while distance >= 3 && distance <= 7
+        cities = dlmread('cities.txt');
+        
+        %Set random infection for this experiment
+        root= unidrnd(length(cities(:,1)));
+        target_city = root;
+        while target_city == root
+            target_city = unidrnd(length(cities(:,1)));
+        end
+        
+        cities(root,3)=1;
+        
+        testsparse = sparse(10000,10000);
+        for i = 1:length(edges)
+            testsparse(edges(i,1),edges(i,2))=1;
+            testsparse(edges(i,2),edges(i,1))=1;
+        end
+        
+        distance = graphshortestpath(testsparse,root,target_city)
+        testsparse = 0;
+    %end
+
     
     %parameter definition
     dt = 2; %hours
-    runtime = 24*10; %hours
+    runtime = 24*80; %hours
     t = 0; %initialization
     meeting_events_mean = 7.5;%per day
     meeting_events_stdev = 7;%per day
@@ -40,17 +60,22 @@ parfor b=1:2
         
         % Time update
         output_array(:,g) = cities(:,3);
-        t = t + dt;
         g = g + 1;
+        if cities(target_city,3) > 0
+            generate_output(output_array, tot_pop, cities, root,edges,b,t,distance)
+            break
+        end
+        t = t + dt;
         
     end
     
     %  out_file_name = 'exp21.txt';
     %  out_file_name(5) = int2str(b);
     %  dlmwrite(out_file_name,output_array);
-    generate_output(output_array, tot_pop,cities,root,edges,b);
+    %generate_output(output_array, tot_pop,cities,root,edges,b);
     
 end
+
 end
 
 function cities = Simulate_Infection(cities,dt,meeting_events_mean,meeting_events_stdev,infection_prob,t)
@@ -110,10 +135,12 @@ for i = 1:length(edges)
     r(1) = ceil(rand*length(edges));
     r(2) = ceil(rand*length(edges));
     temp_edges = edges(r(1),:);
+    temp_tot_T = tot_T(r(1));
+    tot_T(r(1)) = tot_T(r(2));
+    tot_T(r(2)) = temp_tot_T;
     edges(r(1),:) = edges(r(2),:);
     edges(r(2),:) = temp_edges;
 end
-
 
 for i = 1:length(edges)
     
@@ -128,7 +155,7 @@ for i = 1:length(edges)
     %
     if I(x) < N(x) && I(x) > 0
         [mean, var] = hygestat(N(x),I(x),tot_T(i));
-        T(i,1) = abs(round(1+randn*sqrt(var) + mean));
+        T(i,1) = abs(round(randn*sqrt(var) + mean));
         %T(i,1) = binornd(tot_T(i),I(x)/N(x)); % Infected voyagers traveling from x to y.
         
     elseif I(x) == N(x)
@@ -141,7 +168,7 @@ for i = 1:length(edges)
     if I(y) < N(y) && I(y) > 0
         
         [mean, var] = hygestat(N(y),I(y),tot_T(i));
-        T(i,2) = abs(round(1+randn*sqrt(var) + mean));
+        T(i,2) = abs(round(randn*sqrt(var) + mean));
         %T(i,2) = binornd(tot_T(i),I(y)/N(y)); % " " " " y to x.
         
     elseif I(y) == N(y)
@@ -194,33 +221,27 @@ cities(:,3) = I; % Update cities matrix.
 
 end
 
-function generate_output(output_array, tot_pop, cities, root,edges,b)
+function generate_output(output_array, tot_pop, cities, root,edges,b,t, distance)
 
-%calculate and produce file for total infected ratio
-totinfect(length(output_array(1,:)))=0;
-z = 0;
-min_30_percent = 1;
-for i = 1:length(output_array(1,:))
-    totinfect(i)=sum(output_array(:,i))/tot_pop;
-    if totinfect(i) >= 0.3 && z == 0
-        min_30_percent = i;
-        z = 1;
-    end
-end
-ratio_name='rati2000.txt';
-bstr=int2str(b);
-ratio_name(9-length(bstr):8)=bstr;
-dlmwrite(ratio_name,totinfect);
-
-
+bstr = int2str(b);
 
 %calculate degree of root node and 1st generation neighborhood
 connections = find(edges == root);
 tot_degree = cities(root,1);
-
-output_degree(1) = tot_degree;
-output_degree(2) = cities(root,3)/cities(root,2);
-degree_corr_name='degre6_corr000.txt';
+%for i = 1:length(connections)
+%     if connections(i) > length(edges)
+%         connections(i) = connections(i) - length(edges);
+%     end
+%     if edges(connections(i),1) == root
+%         working_node = edges(connections(i),2);
+%     else
+%         working_node = edges(connections(i),1);
+%     end
+%     tot_degree = tot_degree + cities(working_node,1);
+% end
+output_degree(1) = distance;
+output_degree(2) = t;
+degree_corr_name='degre5_corr000.txt';
 degree_corr_name(15-length(bstr):14)=bstr;
 dlmwrite(degree_corr_name,output_degree);
 
