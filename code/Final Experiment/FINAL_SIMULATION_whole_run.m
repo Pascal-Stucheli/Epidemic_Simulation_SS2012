@@ -1,8 +1,8 @@
 % Final Simulation
 
-function FINAL_SIMULATIONc
+function FINAL_SIMULATION_whole_run
 
-parfor b=1:2
+parfor b=1:6
     
     %load network
     
@@ -13,11 +13,11 @@ parfor b=1:2
     cities(root,3)=1;
     
     edges = dlmread('edges.txt');
-    tot_T = round(dlmread('tot_T.txt')/100);
+    tot_T = ceil(dlmread('tot_T.txt')/100);
     
     %parameter definition
     dt = 2; %hours
-    runtime = 24*10; %hours
+    runtime = 24*80; %hours
     t = 0; %initialization
     meeting_events_mean = 7.5;%per day
     meeting_events_stdev = 7;%per day
@@ -110,6 +110,9 @@ for i = 1:length(edges)
     r(1) = ceil(rand*length(edges));
     r(2) = ceil(rand*length(edges));
     temp_edges = edges(r(1),:);
+    temp_tot_T = tot_T(r(1));
+    tot_T(r(1)) = tot_T(r(2));
+    tot_T(r(2)) = temp_tot_T;
     edges(r(1),:) = edges(r(2),:);
     edges(r(2),:) = temp_edges;
 end
@@ -128,7 +131,7 @@ for i = 1:length(edges)
     %
     if I(x) < N(x) && I(x) > 0
         [mean, var] = hygestat(N(x),I(x),tot_T(i));
-        T(i,1) = abs(round(1+randn*sqrt(var) + mean));
+        T(i,1) = abs(round(randn*sqrt(var) + mean));
         %T(i,1) = binornd(tot_T(i),I(x)/N(x)); % Infected voyagers traveling from x to y.
         
     elseif I(x) == N(x)
@@ -141,7 +144,7 @@ for i = 1:length(edges)
     if I(y) < N(y) && I(y) > 0
         
         [mean, var] = hygestat(N(y),I(y),tot_T(i));
-        T(i,2) = abs(round(1+randn*sqrt(var) + mean));
+        T(i,2) = abs(round(randn*sqrt(var) + mean));
         %T(i,2) = binornd(tot_T(i),I(y)/N(y)); % " " " " y to x.
         
     elseif I(y) == N(y)
@@ -196,32 +199,21 @@ end
 
 function generate_output(output_array, tot_pop, cities, root,edges,b)
 
-%calculate and produce file for total infected ratio
-totinfect(length(output_array(1,:)))=0;
-z = 0;
-min_30_percent = 1;
+bstr = int2str(b);
+
+%calculate and produce file for number of cities with at least 20% infected
+percent_10_infected(length(output_array(1,:)))=0;
+n = 0;
 for i = 1:length(output_array(1,:))
-    totinfect(i)=sum(output_array(:,i))/tot_pop;
-    if totinfect(i) >= 0.3 && z == 0
-        min_30_percent = i;
-        z = 1;
+    percent_10_infected(i)=0;
+    for g = 1:length(output_array(:,1))
+        if output_array(g,i)/cities(g,2) >= 0.1
+            percent_10_infected(i) = percent_10_infected(i) + 1;
+        end
     end
 end
-ratio_name='rati2000.txt';
-bstr=int2str(b);
-ratio_name(9-length(bstr):8)=bstr;
-dlmwrite(ratio_name,totinfect);
 
-
-
-%calculate degree of root node and 1st generation neighborhood
-connections = find(edges == root);
-tot_degree = cities(root,1);
-
-output_degree(1) = tot_degree;
-output_degree(2) = cities(root,3)/cities(root,2);
-degree_corr_name='degre6_corr000.txt';
-degree_corr_name(15-length(bstr):14)=bstr;
-dlmwrite(degree_corr_name,output_degree);
-
+percent_corr_name='percent_10_total_000.txt';
+percent_corr_name(21-length(bstr):20)=bstr;
+dlmwrite(percent_corr_name,percent_10_infected);
 end
