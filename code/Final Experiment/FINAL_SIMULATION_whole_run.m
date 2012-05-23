@@ -2,7 +2,7 @@
 
 function FINAL_SIMULATION_whole_run
 
-parfor b=1:6
+parfor b=1:1
     
     %load network
     
@@ -203,12 +203,14 @@ bstr = int2str(b);
 
 %calculate and produce file for number of cities with at least 20% infected
 percent_10_infected(length(output_array(1,:)))=0;
-n = 0;
+ratio(length(output_array(1,:)))=0;
+
 for i = 1:length(output_array(1,:))
     percent_10_infected(i)=0;
+    ratio(i) = sum(output_array(:,i))/tot_pop;
     for g = 1:length(output_array(:,1))
         if output_array(g,i)/cities(g,2) >= 0.1
-            percent_10_infected(i) = percent_10_infected(i) + 1;
+            percent_10_infected(i) = percent_10_infected(i) + 1; 
         end
     end
 end
@@ -216,4 +218,7 @@ end
 percent_corr_name='percent_10_total_000.txt';
 percent_corr_name(21-length(bstr):20)=bstr;
 dlmwrite(percent_corr_name,percent_10_infected);
+ratio_2nd_name='ratio_2nd_000.txt';
+ratio_2nd_name(14-length(bstr):13)=bstr;
+dlmwrite(ratio_2nd_name,ratio);
 end
