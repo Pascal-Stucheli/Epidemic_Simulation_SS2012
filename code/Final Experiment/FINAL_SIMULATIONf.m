@@ -1,8 +1,8 @@
 % Final Simulation
 
-function FINAL_SIMULATIONd
+function FINAL_SIMULATIONf
 
-parfor b=2:2
+parfor b=300:400
     
     %load network
     
