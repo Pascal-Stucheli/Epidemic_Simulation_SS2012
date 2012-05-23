@@ -3,7 +3,7 @@
 function FINAL_SIMULATIONf
 
 
-parfor b=100:200
+parfor b=201:400
 
     
     %load network
@@ -13,7 +13,7 @@ parfor b=100:200
     tot_T = round(dlmread('tot_T.txt')/100);
     distance = 4;
     
-    while distance >= 4 && distance <= 6
+    %while distance >= 4 && distance <= 6
     
     %Set random infection for this experiment
     root= unidrnd(length(cities(:,1)));
@@ -32,7 +32,7 @@ parfor b=100:200
     
     distance = graphshortestpath(testsparse,root,target_city)
     testsparse = 0;
-    end
+    %end
     
     %parameter definition
     dt = 2; %hours
