@@ -1,7 +1,5 @@
-%20.4.2012 Christian Jordi
-%Generation of a scale free network, with the possibility to form loops
-
 function[cities,edge]=networkepid2loops(ncit,seeded,seedct)
+%Generation of a scale free network, with the possibility to form loops
 
 %Input parameters are:
 %ncit: integer, number of nodes in the generated network
@@ -53,22 +51,25 @@ while pos < ncit
          end
     end
 end
-%bring data in a form gephi can understand
+%bring data in a form gephi can understand -> convert into a cell to use
+%the provided function cell2csv.
 edgecell=num2cell(edge);
 edgecell2{length(edgecell),3}=0;
 
-
+%Beside the Source and Target nodes an additional column is needed so that
+%gephi generates an undirected graph 
 for i=1:length(edgecell)
     edgecell2{i+1,1}=edgecell{i,1};
     edgecell2{i+1,2}=edgecell{i,2};
     edgecell2{i+1,3}='undirected';
 end
 
+%The columns need titles, so that gephi recognizes them
 edgecell2{1,1}='source';
 edgecell2{1,2}='target';
 edgecell2{1,3}='type';
 
-%Save the data
+%Save the data as a .csv for gephi and as .txt for the simulation
 cell2csv('smallernetwork10kfinalloop.csv', edgecell2, [], 2007, [])
 dlmwrite('edges.txt',edge);
 
