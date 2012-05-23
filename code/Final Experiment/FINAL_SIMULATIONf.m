@@ -3,35 +3,36 @@
 function FINAL_SIMULATIONf
 
 
-parfor b=700:800
-
+parfor b=1:200
+    
     
     %load network
     
-    cities = dlmread('cities.txt');
-        edges = dlmread('edges.txt');
+    
+    edges = dlmread('edges.txt');
     tot_T = round(dlmread('tot_T.txt')/100);
     distance = 4;
     
-    while distance >= 4 && distance <= 6
-    
-    %Set random infection for this experiment
-    root= unidrnd(length(cities(:,1)));
-    target_city = root;
-    while target_city == root
-        target_city = unidrnd(length(cities(:,1)));
-    end
-    
-    cities(root,3)=1;
+    while distance >= 3 && distance <= 7
+        cities = dlmread('cities.txt');
         
-    testsparse = sparse(10000,10000);
-    for i = 1:length(edges)
-        testsparse(edges(i,1),edges(i,2))=1;
-        testsparse(edges(i,2),edges(i,1))=1;        
-    end
-    
-    distance = graphshortestpath(testsparse,root,target_city)
-    testsparse = 0;
+        %Set random infection for this experiment
+        root= unidrnd(length(cities(:,1)));
+        target_city = root;
+        while target_city == root
+            target_city = unidrnd(length(cities(:,1)));
+        end
+        
+        cities(root,3)=1;
+        
+        testsparse = sparse(10000,10000);
+        for i = 1:length(edges)
+            testsparse(edges(i,1),edges(i,2))=1;
+            testsparse(edges(i,2),edges(i,1))=1;
+        end
+        
+        distance = graphshortestpath(testsparse,root,target_city)
+        testsparse = 0;
     end
     
     %parameter definition
