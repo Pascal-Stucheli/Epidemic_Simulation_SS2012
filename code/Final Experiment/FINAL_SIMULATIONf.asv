@@ -3,7 +3,7 @@
 function FINAL_SIMULATIONf
 
 
-parfor b=500:600
+parfor b=700:800
 
     
     %load network
@@ -11,6 +11,7 @@ parfor b=500:600
     cities = dlmread('cities.txt');
         edges = dlmread('edges.txt');
     tot_T = round(dlmread('tot_T.txt')/100);
+    distance = 4;
     
     while distance >= 4 && distance <= 6
     
@@ -23,13 +24,14 @@ parfor b=500:600
     
     cities(root,3)=1;
         
-    testmatrix = zeros(10000,10000);
+    testsparse = sparse(10000,10000);
     for i = 1:length(edges)
-        testmatrix(edges(i,1),edges(i,2))=1;
-        testmatrix(edges(i,2),edges(i,1))=1;        
+        testsparse(edges(i,1),edges(i,2))=1;
+        testsparse(edges(i,2),edges(i,1))=1;        
     end
-    testsparse = sparse(testmatrix);
-    distance = graphshortestpath(testsparse,root,target_city);
+    
+    distance = graphshortestpath(testsparse,root,target_city);7
+    testsparse = 0;
     end
     
     %parameter definition

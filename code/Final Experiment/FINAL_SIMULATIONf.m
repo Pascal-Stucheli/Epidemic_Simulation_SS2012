@@ -24,13 +24,14 @@ parfor b=100:200
     
     cities(root,3)=1;
         
-    testmatrix = zeros(10000,10000);
+    testsparse = sparse(10000,10000);
     for i = 1:length(edges)
-        testmatrix(edges(i,1),edges(i,2))=1;
-        testmatrix(edges(i,2),edges(i,1))=1;        
+        testsparse(edges(i,1),edges(i,2))=1;
+        testsparse(edges(i,2),edges(i,1))=1;        
     end
-    testsparse = sparse(testmatrix);
-    distance = graphshortestpath(testsparse,root,target_city);
+    
+    distance = graphshortestpath(testsparse,root,target_city)
+    testsparse = 0;
     end
     
     %parameter definition
