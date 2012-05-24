@@ -52,8 +52,8 @@ parfor b=1:500
     generate_output(output_array, tot_pop,cities,root,edges,b);
     
 end
-dos('shutdown /s')
-quit
+% dos('shutdown /s')
+% quit
 end
 
 function cities = Simulate_Infection(cities,dt,meeting_events_mean,meeting_events_stdev,infection_prob,t)
