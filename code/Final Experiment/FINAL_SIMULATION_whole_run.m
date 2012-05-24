@@ -92,9 +92,9 @@ parfor b=1:500
         %         end
         % ---
         
-        %For the degree correlation another break condition was used 
+        %For the degree correlation another break condition was used
         %because not the whole simulation had to be run. The break
-        %condition comes into play when at least 20 cities are infected. 
+        %condition comes into play when at least 20 cities are infected.
         % ---
         %         if length(find(cities(:,3)>=1))>=20
         %             generate_output(output_array, tot_pop, cities, root,edges,b,t)
