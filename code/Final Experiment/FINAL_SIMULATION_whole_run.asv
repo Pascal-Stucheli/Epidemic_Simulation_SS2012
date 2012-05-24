@@ -1,8 +1,8 @@
 % Final Simulation
 
-function FINAL_SIMULATIONd
+function FINAL_SIMULATION_whole_run
 
-parfor b=1:300
+parfor b=1:1
     
     %load network
     
@@ -13,11 +13,11 @@ parfor b=1:300
     cities(root,3)=1;
     
     edges = dlmread('edges.txt');
-    tot_T = round(dlmread('tot_T.txt')/100);
+    tot_T = ceil(dlmread('tot_T.txt')/100);
     
     %parameter definition
     dt = 2; %hours
-    runtime = 24*80; %hours
+    runtime = 24*; %hours
     t = 0; %initialization
     meeting_events_mean = 7.5;%per day
     meeting_events_stdev = 7;%per day
@@ -40,19 +40,15 @@ parfor b=1:300
         
         % Time update
         output_array(:,g) = cities(:,3);
-        g = g + 1;
-        if length(find(cities(:,3)))>=10
-            generate_output(output_array, tot_pop, cities, root,edges,b,t)
-            break
-        end
         t = t + dt;
-
+        g = g + 1;
+        
     end
     
     %  out_file_name = 'exp21.txt';
     %  out_file_name(5) = int2str(b);
     %  dlmwrite(out_file_name,output_array);
-    %generate_output(output_array, tot_pop,cities,root,edges,b);
+    generate_output(output_array, tot_pop,cities,root,edges,b);
     
 end
 end
@@ -109,6 +105,19 @@ S = N-I; % Susceptibles
 % col1: Infected voyagers going x -> y; col2: Infected voyagers going y -> x
 T = zeros(length(edges(:,2)),2);
 
+%unsort edges
+for i = 1:length(edges)
+    r(1) = ceil(rand*length(edges));
+    r(2) = ceil(rand*length(edges));
+    temp_edges = edges(r(1),:);
+    temp_tot_T = tot_T(r(1));
+    tot_T(r(1)) = tot_T(r(2));
+    tot_T(r(2)) = temp_tot_T;
+    edges(r(1),:) = edges(r(2),:);
+    edges(r(2),:) = temp_edges;
+end
+
+
 for i = 1:length(edges)
     
     x = edges(i,1); % It is not necessary to define x and y but it may helps with the overview
@@ -122,7 +131,7 @@ for i = 1:length(edges)
     %
     if I(x) < N(x) && I(x) > 0
         [mean, var] = hygestat(N(x),I(x),tot_T(i));
-        T(i,1) = abs(round(1+randn*sqrt(var) + mean));
+        T(i,1) = abs(round(randn*sqrt(var) + mean));
         %T(i,1) = binornd(tot_T(i),I(x)/N(x)); % Infected voyagers traveling from x to y.
         
     elseif I(x) == N(x)
@@ -135,7 +144,7 @@ for i = 1:length(edges)
     if I(y) < N(y) && I(y) > 0
         
         [mean, var] = hygestat(N(y),I(y),tot_T(i));
-        T(i,2) = abs(round(1+randn*sqrt(var) + mean));
+        T(i,2) = abs(round(randn*sqrt(var) + mean));
         %T(i,2) = binornd(tot_T(i),I(y)/N(y)); % " " " " y to x.
         
     elseif I(y) == N(y)
@@ -188,28 +197,27 @@ cities(:,3) = I; % Update cities matrix.
 
 end
 
-function generate_output(output_array, tot_pop, cities, root,edges,b,t)
+function generate_output(output_array, tot_pop, cities, root,edges,b)
 
 bstr = int2str(b);
 
-%calculate degree of root node and 1st generation neighborhood
-connections = find(edges == root);
-tot_degree = cities(root,1);
-%for i = 1:length(connections)
-%     if connections(i) > length(edges)
-%         connections(i) = connections(i) - length(edges);
-%     end
-%     if edges(connections(i),1) == root
-%         working_node = edges(connections(i),2);
-%     else
-%         working_node = edges(connections(i),1);
-%     end
-%     tot_degree = tot_degree + cities(working_node,1);
-% end
-output_degree(1) = tot_degree;
-output_degree(2) = t;
-degree_corr_name='degre4_corr000.txt';
-degree_corr_name(15-length(bstr):14)=bstr;
-dlmwrite(degree_corr_name,output_degree);
+%calculate and produce file for number of cities with at least 20% infected
+percent_10_infected(length(output_array(1,:)))=0;
+n = 0;
+for i = 1:length(output_array(1,:))
+    percent_10_infected(i)=0;
+    for g = 1:length(output_array(:,1))
+        if output_array(g,i)/cities(g,2) >= 0.1
+            percent_10_infected(i) = percent_10_infected(i) + 1;
+        end
+    end
+end
+
+percent_corr_name='percent_10_total_000.txt';
+percent_corr_name(21-length(bstr):20)=bstr;
+dlmwrite(percent_corr_name,percent_10_infected);
+
+
+end
 
 end

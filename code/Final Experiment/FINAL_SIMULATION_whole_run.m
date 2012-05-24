@@ -1,39 +1,19 @@
 % Final Simulation
 
-function FINAL_SIMULATIONf
+function FINAL_SIMULATION_whole_run
 
-parfor b=1:80
-    
+parfor b=1:500
     
     %load network
     
+    cities = dlmread('cities.txt');
+    
+    %Set random infection for this experiment
+    root= unidrnd(length(cities(:,1)));
+    cities(root,3)=1;
     
     edges = dlmread('edges.txt');
-    tot_T = round(dlmread('tot_T.txt')/100);
-    distance = 4;
-    
-    %while distance >= 3 && distance <= 7
-        cities = dlmread('cities.txt');
-        
-        %Set random infection for this experiment
-        root= unidrnd(length(cities(:,1)));
-        target_city = root;
-        while target_city == root
-            target_city = unidrnd(length(cities(:,1)));
-        end
-        
-        cities(root,3)=1;
-        
-        testsparse = sparse(10000,10000);
-        for i = 1:length(edges)
-            testsparse(edges(i,1),edges(i,2))=1;
-            testsparse(edges(i,2),edges(i,1))=1;
-        end
-        
-        distance = graphshortestpath(testsparse,root,target_city)
-        testsparse = 0;
-    %end
-
+    tot_T = ceil(dlmread('tot_T.txt')/100);
     
     %parameter definition
     dt = 2; %hours
@@ -60,22 +40,17 @@ parfor b=1:80
         
         % Time update
         output_array(:,g) = cities(:,3);
-        g = g + 1;
-        if cities(target_city,3) > 0
-            generate_output(output_array, tot_pop, cities, root,edges,b,t,distance)
-            break
-        end
         t = t + dt;
+        g = g + 1;
         
     end
     
     %  out_file_name = 'exp21.txt';
     %  out_file_name(5) = int2str(b);
     %  dlmwrite(out_file_name,output_array);
-    %generate_output(output_array, tot_pop,cities,root,edges,b);
+    generate_output(output_array, tot_pop,cities,root,edges,b);
     
 end
-
 end
 
 function cities = Simulate_Infection(cities,dt,meeting_events_mean,meeting_events_stdev,infection_prob,t)
@@ -132,12 +107,16 @@ T = zeros(length(edges(:,2)),2);
 
 %unsort edges
 for i = 1:length(edges)
-   r(1) = ceil(rand*length(edges)); 
-   r(2) = ceil(rand*length(edges));
-   temp_edges = edges(r(1),:);
-   edges(r(1),:) = edges(r(2),:);
-   edges(r(2),:) = temp_edges;
+    r(1) = ceil(rand*length(edges));
+    r(2) = ceil(rand*length(edges));
+    temp_edges = edges(r(1),:);
+    temp_tot_T = tot_T(r(1));
+    tot_T(r(1)) = tot_T(r(2));
+    tot_T(r(2)) = temp_tot_T;
+    edges(r(1),:) = edges(r(2),:);
+    edges(r(2),:) = temp_edges;
 end
+
 
 for i = 1:length(edges)
     
@@ -152,7 +131,7 @@ for i = 1:length(edges)
     %
     if I(x) < N(x) && I(x) > 0
         [mean, var] = hygestat(N(x),I(x),tot_T(i));
-        T(i,1) = abs(round(1+randn*sqrt(var) + mean));
+        T(i,1) = abs(round(randn*sqrt(var) + mean));
         %T(i,1) = binornd(tot_T(i),I(x)/N(x)); % Infected voyagers traveling from x to y.
         
     elseif I(x) == N(x)
@@ -165,7 +144,7 @@ for i = 1:length(edges)
     if I(y) < N(y) && I(y) > 0
         
         [mean, var] = hygestat(N(y),I(y),tot_T(i));
-        T(i,2) = abs(round(1+randn*sqrt(var) + mean));
+        T(i,2) = abs(round(randn*sqrt(var) + mean));
         %T(i,2) = binornd(tot_T(i),I(y)/N(y)); % " " " " y to x.
         
     elseif I(y) == N(y)
@@ -218,28 +197,28 @@ cities(:,3) = I; % Update cities matrix.
 
 end
 
-function generate_output(output_array, tot_pop, cities, root,edges,b,t, distance)
+function generate_output(output_array, tot_pop, cities, root,edges,b)
 
 bstr = int2str(b);
 
-%calculate degree of root node and 1st generation neighborhood
-connections = find(edges == root);
-tot_degree = cities(root,1);
-%for i = 1:length(connections)
-%     if connections(i) > length(edges)
-%         connections(i) = connections(i) - length(edges);
-%     end
-%     if edges(connections(i),1) == root
-%         working_node = edges(connections(i),2);
-%     else
-%         working_node = edges(connections(i),1);
-%     end
-%     tot_degree = tot_degree + cities(working_node,1);
-% end
-output_degree(1) = distance;
-output_degree(2) = t;
-degree_corr_name='degre5_corr000.txt';
-degree_corr_name(15-length(bstr):14)=bstr;
-dlmwrite(degree_corr_name,output_degree);
+%calculate and produce file for number of cities with at least 20% infected
+percent_10_infected(length(output_array(1,:)))=0;
+ratio(length(output_array(1,:)))=0;
 
+for i = 1:length(output_array(1,:))
+    percent_10_infected(i)=0;
+    ratio(i) = sum(output_array(:,i))/tot_pop;
+    for g = 1:length(output_array(:,1))
+        if output_array(g,i)/cities(g,2) >= 0.1
+            percent_10_infected(i) = percent_10_infected(i) + 1; 
+        end
+    end
+end
+
+percent_corr_name='percent_10_total_000.txt';
+percent_corr_name(21-length(bstr):20)=bstr;
+dlmwrite(percent_corr_name,percent_10_infected);
+ratio_2nd_name='ratio_2nd_000.txt';
+ratio_2nd_name(14-length(bstr):13)=bstr;
+dlmwrite(ratio_2nd_name,ratio);
 end

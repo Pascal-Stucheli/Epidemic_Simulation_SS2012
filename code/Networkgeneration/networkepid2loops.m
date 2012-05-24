@@ -1,18 +1,15 @@
-%20.4.2012 Christian Jordi
-%Generation of a scale free network
 
 function[cities,edge]=networkepid2loops(ncit,seeded,seedct)
 
-%Parameters
-%ncit= 100; %number of cities
-%variables
-%seeded = [1 5; 2 3; 4 5;4 3];%seed for the edges
-%seedct = [1 0 0;1 0 0;1 0 0;1 0 0;2 0 0]; %seed for the cities
+%function that generates a scale free network with loops. 
+%The input variables are: -ncit: number of cities in the network
+%                         -seeded: seed for edge list
+%                         -seedct: seed for nodes
+
 cities=zeros(ncit,3);
 pos= length(seedct(:,1));
 cities(1:pos,1:3)=seedct; %Stores (degree,Susceptibles,Infected)
 edge=seeded; %Connections btwn the cities, store lower index first
-pass=0; %number of passengers on an edge %%%%%%not used yet%%%%%%%%%
 mlinks=2; %number of links that are fixed at each step increased to two
 sumlinks=length(edge(:,1)); %total number of edges
 linkage=0; %Determines wether a new edge has been set 

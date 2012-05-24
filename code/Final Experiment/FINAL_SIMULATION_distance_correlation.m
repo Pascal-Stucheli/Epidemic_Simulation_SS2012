@@ -2,7 +2,7 @@
 
 function FINAL_SIMULATION_distance_correlation
 
-parfor b=1:80
+parfor b=121:130
     
     
     %load network
@@ -12,7 +12,7 @@ parfor b=1:80
     tot_T = round(dlmread('tot_T.txt')/100);
     distance = 4;
     
-    %while distance >= 3 && distance <= 7
+    while distance >= 3 && distance <= 10
         cities = dlmread('cities.txt');
         
         %Set random infection for this experiment
@@ -30,9 +30,9 @@ parfor b=1:80
             testsparse(edges(i,2),edges(i,1))=1;
         end
         
-        distance = graphshortestpath(testsparse,root,target_city)
+        distance = graphshortestpath(testsparse,root,target_city);
         testsparse = 0;
-    %end
+    end
 
     
     %parameter definition
