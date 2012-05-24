@@ -17,7 +17,7 @@ parfor b=1:1
     
     %parameter definition
     dt = 2; %hours
-    runtime = 24*80; %hours
+    runtime = 24*100; %hours
     t = 0; %initialization
     meeting_events_mean = 7.5;%per day
     meeting_events_stdev = 7;%per day

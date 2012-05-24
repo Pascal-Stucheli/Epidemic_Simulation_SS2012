@@ -42,8 +42,17 @@ q=1;
 
 while q<=timesteps
     infected2(:,h)=infected(:,q);
-    q=round(q+cities/70);
-    h=h+1;
+    if q<400
+    q=q+20;
+    end
+    if q<800 && q>400
+        q=q+2;
+    end
+    if q>800
+        q=q+50;
+    end
+
+        h=h+1;
 end
 infected=infected2;
 timesteps=length(infected(1,:))
