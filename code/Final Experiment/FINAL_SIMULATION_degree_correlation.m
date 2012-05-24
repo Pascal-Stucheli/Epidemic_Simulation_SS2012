@@ -2,7 +2,7 @@
 
 function FINAL_SIMULATION_degree_correlation
 
-parfor b=1:500
+parfor b=651:670
     
     %load network
     
@@ -11,7 +11,7 @@ parfor b=1:500
     tot_T = round(dlmread('tot_T.txt')/100);
     
     tot_degree = 0;
-    %while tot_degree < 150
+    while tot_degree < 250
         %Set random infection for this experiment
         root= unidrnd(length(cities(:,1)));
         connections = find(edges == root);
@@ -28,7 +28,7 @@ parfor b=1:500
             end
             tot_degree = tot_degree + cities(working_node,1);
         end
-    %end
+    end
     cities(root,3)=1;
     
     

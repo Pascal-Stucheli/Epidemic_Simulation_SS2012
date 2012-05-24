@@ -120,44 +120,84 @@ clear all
 %     end
 % end
 
-% n = 1;
-% degre2_correlation = [0 0];
-% for i = 1:999
-%     try
-%         bstr = int2str(i);
-%         degre2_corr_name='degre2_corr000.txt';
-%         degre2_corr_name(15-length(bstr):14)=bstr;
-%         degre2_correlation(n,:) = dlmread(degre2_corr_name);
-%         n = n + 1;
-%     end
-% end
-% figure(4)
-% hold on
-% plot(degre2_correlation(:,2),(degre2_correlation(:,1)),'.b')
-% t = 350:0.1:650;
-% q = 10.^(t.*(-0.0026)+2.7849);
-% plot(t,q)
+%% degree correlation
 
 n = 1;
-degre3_correlation = [0 0];
+degre2_correlation = [0 0];
 for i = 1:999
     try
         bstr = int2str(i);
-        degre3_corr_name='degre4_corr000.txt';
-        degre3_corr_name(15-length(bstr):14)=bstr;
-        degre3_correlation(n,:) = dlmread(degre3_corr_name);
+        degre2_corr_name='degre7_corr000.txt';
+        degre2_corr_name(15-length(bstr):14)=bstr;
+        degre2_correlation(n,:) = dlmread(degre2_corr_name);
         n = n + 1;
     end
 end
+
 figure(4)
+
+x = degre2_correlation(:,1);
+y = degre2_correlation(:,2);
+
+plot(x,y,'sb','MarkerSize',2,'MarkerFaceColor','b')
 hold on
-for i = 1:8
-    a{i} = degre3_correlation(find(degre3_correlation==i),:);
-end
 
-plot((degre3_correlation(:,1)),(degre3_correlation(:,2)),'.b')
+deg = min(x):0.1:max(x);
+q = 789.7*deg.^(-0.1128);
+plot(deg,q,'k', 'LineWidth',2)
+xlim([min(x)*0.9,max(x)*1.1])
+ ylabel('Time until at least 10 cities are infected with at least 10 percent [cities]')
+xlabel('degree of seed and 1st generation surrounding nodes [degree]')
 
-d = 1:0.1:9;
-[a,b,c] = regression((degre3_correlation(:,1).'),(degre3_correlation(:,2).'))
-q = (d.*(b)+c);
-plot(d,q)
+
+box on
+hold off
+
+%% distance correlation
+
+% n = 1;
+% degre5_correlation = [0 0];
+% for i = 1:999
+%     try
+%         bstr = int2str(i);
+%         degre5_corr_name='degre5_corr000.txt';
+%         degre5_corr_name(15-length(bstr):14)=bstr;
+%         degre5_correlation(n,:) = dlmread(degre5_corr_name);
+%         n = n + 1;
+%     end
+% end
+% degre5_correlation(:,2) = degre5_correlation(:,2)/24;
+% figure(4)
+% set(gca,'FontSize',14)
+% box on
+% %grid on
+% hold on
+% %mean calculation
+% for i = 1:8
+%     finder = find(degre5_correlation==i);
+%     for q = 1:length(finder)
+%        if finder(q) > length(degre5_correlation)
+%            finder(q) = finder(q) - length(degre5_correlation);
+%        end
+%     end
+%     g{i} = degre5_correlation(finder(:),2);
+% end
+% for i = 1:8
+%    m(i) = mean(g{i});
+%    st(i) = std(g{i});
+%    %plot(i,m(i),'*r')
+% end
+% %plot((degre5_correlation(:,1)),(degre5_correlation(:,2)),'.b')
+% 
+% d = min(degre5_correlation(:,1)):0.1:max(degre5_correlation(:,1));
+% [a,b,c] = regression((degre5_correlation(:,1).'),(degre5_correlation(:,2)).')
+% 
+% %% time delay = distance*6.577  (6.131, 7.023) + 8.802  (6.434, 11.17)
+% 
+% q = ((d).*(b)+c);
+% plot(d,q,'k','LineWidth',2)
+% errorbar(1:8,m,st,'.b')
+%  xlim([min(degre5_correlation(:,1))-0.5 max(degre5_correlation(:,1))+0.5])
+%  ylabel('Time until one infected is found in random city [d]')
+% xlabel('distance between seed and random city [connections]')
+% 
