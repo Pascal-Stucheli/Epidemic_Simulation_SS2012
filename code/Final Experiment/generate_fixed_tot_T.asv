@@ -19,16 +19,16 @@ for	i = 1:length(edges)
     x = edges(i,1);
     y = edges(i,2);
     
-    % We weight the transport along an edge with the degrees of the cities. 
+    % We weight the transport along an edge with the degrees of the cities.
     % This is due our assumption that the plublic transport to cities with
     % many connection (e.g. big station or airport) must be high.
     trsp_xy = (k(x)+k(y))/k_mean * tf; % factor scaled with degrees.
     
     % We take the population of the smaller cities to determine the total
     % number of voyagers to avoid that a small city has more leaving
-    % voyagers than inhabitants. This is based on our assumption that the 
-    % number of voyagers in both direction of an edge must be the same to 
-    % keep the population in the cities constant). Scaling with the 
+    % voyagers than inhabitants. This is based on our assumption that the
+    % number of voyagers in both direction of an edge must be the same to
+    % keep the population in the cities constant). Scaling with the
     % reciprocal of the degree of the smaller city ensures that also small
     % cities with high degree do not higher fluxes than citizens.
     if	N(x) < N(y)
