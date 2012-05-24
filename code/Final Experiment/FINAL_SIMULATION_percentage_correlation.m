@@ -2,7 +2,7 @@
 
 function FINAL_SIMULATION_percentage_correlation
 
-parfor b=200:300
+for b=1:1
     
     %load network
     
@@ -13,7 +13,7 @@ parfor b=200:300
     cities(root,3)=1;
     
     edges = dlmread('edges.txt');
-    tot_T = ceil(dlmread('tot_T.txt')/1000);
+    tot_T = ceil(dlmread('tot_T.txt')/100);
     
     %parameter definition
     dt = 2; %hours
@@ -24,7 +24,7 @@ parfor b=200:300
     infection_prob = 0.05; %infection probability on meeting event
     g = 1;
     output_array = zeros(length(cities(:,1)),runtime/dt);
-    tot_pop=sum(cities(:,2));
+    tot_pop=sum(cities(:,2))
     
     %main step runs through the whole time
     
