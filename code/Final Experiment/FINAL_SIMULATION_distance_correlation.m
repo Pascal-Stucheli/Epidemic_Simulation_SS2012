@@ -2,7 +2,7 @@
 
 function FINAL_SIMULATION_distance_correlation
 
-parfor b=121:130
+parfor b=161:190
     
     
     %load network
@@ -10,9 +10,9 @@ parfor b=121:130
     
     edges = dlmread('edges.txt');
     tot_T = round(dlmread('tot_T.txt')/100);
-    distance = 4;
+    distance = 2;
     
-    while distance >= 3 && distance <= 10
+    while distance < 7
         cities = dlmread('cities.txt');
         
         %Set random infection for this experiment

@@ -105,20 +105,20 @@ clear all
 % plot((1:960)/12,pereipinv,'b','LineWidth',2)
 % plot((1:960)/12,pereiminv,'b','LineWidth',2)
 % 
-figure(3)
-hold on
-n = 1;
-ratio = zeros(1,960);
-for i = 1:999
-    try
-        bstr = int2str(i);
-        ratio_name='ratio000.txt';
-        ratio_name(9-length(bstr):8)=bstr;
-        ratio(n,:) = dlmread(ratio_name);
-        plot((1:960)/12,ratio(n,:))
-        n = n + 1;
-    end
-end
+% figure(3)
+% hold on
+% n = 1;
+% ratio = zeros(1,960);
+% for i = 1:999
+%     try
+%         bstr = int2str(i);
+%         ratio_name='ratio000.txt';
+%         ratio_name(9-length(bstr):8)=bstr;
+%         ratio(n,:) = dlmread(ratio_name);
+%         plot((1:960)/12,ratio(n,:))
+%         n = n + 1;
+%     end
+% end
 
 % n = 1;
 % degre2_correlation = [0 0];
@@ -138,40 +138,49 @@ end
 % q = 10.^(t.*(-0.0026)+2.7849);
 % plot(t,q)
 % 
-% n = 1;
-% degre3_correlation = [0 0];
-% for i = 1:999
-%     try
-%         bstr = int2str(i);
-%         degre5_corr_name='degre5_corr000.txt';
-%         degre5_corr_name(15-length(bstr):14)=bstr;
-%         degre5_correlation(n,:) = dlmread(degre5_corr_name);
-%         n = n + 1;
-%     end
-% end
-% figure(4)
-% hold on
-% %median and mean calculation
-% for i = 1:8
-%     finder = find(degre5_correlation==i);
-%     for q = 1:length(finder)
-%        if finder(q) > length(degre5_correlation)
-%            finder(q) = finder(q) - length(degre5_correlation);
-%        end
-%     end
-%     g{i} = degre5_correlation(finder(:),2);
-% end
-% for i = 1:8
-%    e(i) = median(g{i});
-%    f(i) = mean(g{i});
-%   % plot(i,e(i),'*r')
-%    %plot(i,f(i),'*r')
-% end
-% plot((degre5_correlation(:,1)),(degre5_correlation(:,2)),'.b')
-% 
-% d = min(degre5_correlation(:,1)):0.1:(max(degre5_correlation(:,1)));
-% [a,b,c] = regression((degre5_correlation(:,1).'),(degre5_correlation(:,2)).')
-% q = ((d).*(b)+c);
-% plot(d,q)
- %xlim([min(degre5_correlation(:,1)) max(degre5_correlation(:,1))])
+n = 1;
+degre5_correlation = [0 0];
+for i = 1:999
+    try
+        bstr = int2str(i);
+        degre5_corr_name='degre5_corr000.txt';
+        degre5_corr_name(15-length(bstr):14)=bstr;
+        degre5_correlation(n,:) = dlmread(degre5_corr_name);
+        n = n + 1;
+    end
+end
+degre5_correlation(:,2) = degre5_correlation(:,2)/24;
+figure(4)
+set(gca,'FontSize',14)
+box on
+%grid on
+hold on
+%mean calculation
+for i = 1:8
+    finder = find(degre5_correlation==i);
+    for q = 1:length(finder)
+       if finder(q) > length(degre5_correlation)
+           finder(q) = finder(q) - length(degre5_correlation);
+       end
+    end
+    g{i} = degre5_correlation(finder(:),2);
+end
+for i = 1:8
+   m(i) = mean(g{i});
+   st(i) = std(g{i});
+   %plot(i,m(i),'*r')
+end
+%plot((degre5_correlation(:,1)),(degre5_correlation(:,2)),'.b')
+
+d = min(degre5_correlation(:,1)):0.1:max(degre5_correlation(:,1));
+[a,b,c] = regression((degre5_correlation(:,1).'),(degre5_correlation(:,2)).')
+
+%% time delay = distance*6.577  (6.131, 7.023) + 8.802  (6.434, 11.17)
+
+q = ((d).*(b)+c);
+plot(d,q,'k','LineWidth',2)
+errorbar(1:8,m,st,'.b')
+ xlim([min(degre5_correlation(:,1))-0.5 max(degre5_correlation(:,1))+0.5])
+ ylabel('Time until one infected is found in random city [d]')
+xlabel('distance between seed and random city [connections]')
 

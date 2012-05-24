@@ -2,7 +2,7 @@
 
 function FINAL_SIMULATION_whole_run
 
-parfor b=1:1
+parfor b=570:670
     
     %load network
     
@@ -51,6 +51,8 @@ parfor b=1:1
     generate_output(output_array, tot_pop,cities,root,edges,b);
     
 end
+dos('shutdown /s')
+quit
 end
 
 function cities = Simulate_Infection(cities,dt,meeting_events_mean,meeting_events_stdev,infection_prob,t)
