@@ -3,7 +3,7 @@
 %using Gephi.
 
 %The function needs a txt file containing the infected levels in the
-%Network at various timesteps, a gefx file containg the network data and
+%Network at various timesteps, a gexf file containg the network data and
 %optional a file containing the total population of all the cities
 
 
@@ -11,7 +11,7 @@ function[]=output2gexf()
 
 infected=dlmread('exp21.txt'); %Problem!!! contains NaN...
 
-gefx=importdata('dyndemo500.gexf');
+gexf=importdata('dyndemo500.gexf');
 
 cities=dlmread('cities.txt');
 
@@ -40,13 +40,28 @@ q=1;
 %Reduces the total number of timesteps used for the generation of the
 %dynamic graph. This could be outsourced
 
+% while q<=timesteps
+%     infected2(:,h)=infected(:,q);
+%     if q<400
+%     q=q+20;
+%     end
+%     if q<800 && q>400
+%         q=q+2;
+%     end
+%     if q>800
+%         q=q+50;
+%     end
+% 
+%         h=h+1;
+% end
+
 while q<=timesteps
     infected2(:,h)=infected(:,q);
     if q<400
-    q=q+20;
+    q=q+2;
     end
     if q<800 && q>400
-        q=q+2;
+        q=q+20;
     end
     if q>800
         q=q+50;
@@ -54,6 +69,7 @@ while q<=timesteps
 
         h=h+1;
 end
+
 infected=infected2;
 timesteps=length(infected(1,:))
 
@@ -63,8 +79,8 @@ target='      <node id="1" start="1.0">';
 data='          <attvalue for="Infected" value="000000000000" start="0000.0" endopen="0000.0"></attvalue>';
 findata='          <attvalue for="Infected" value="000000000000" start="0000.0"></attvalue>';
 
-%lgefx2=length(gefx)+cities*timesteps;
-gefx2=cell(10000,1);
+%lgexf2=length(gexf)+cities*timesteps;
+gexf2=cell(10000,1);
 
 pos=1;
 pos2=1;
@@ -72,14 +88,14 @@ pos2=1;
 %Copies the header of the template gexf file into the new version until the
 %data of the first node can be inserted
 
-while strcmp(target,gefx{pos}) ~= 1
-      gefx2{pos2}=gefx{pos};
+while strcmp(target,gexf{pos}) ~= 1
+      gexf2{pos2}=gexf{pos};
        pos=pos+1;    %15
        pos2=pos2+1; %15
 end
 
-gefx2{pos2}=target;
-gefx2{pos2+1}='        <attvalues>';
+gexf2{pos2}=target;
+gexf2{pos2+1}='        <attvalues>';
 pos2=pos2+1; %Update to the correct position 16
 
 %Insertion of the infected levels at every timestep for each node.
@@ -97,7 +113,7 @@ for i=1:cities
            dummy=num2str(n+1);
            d=length(dummy);
            data2(85-d:84)=dummy(1:d);
-           gefx2{pos2+n}=data2; 
+           gexf2{pos2+n}=data2; 
        end
        
        pos2=pos2+timesteps; %19
@@ -113,7 +129,7 @@ for i=1:cities
        d=length(dummy);
        findata2(68-d:67)=dummy(1:d);
        
-       gefx2{pos2}=findata2; %the infected for the first node are now calculated
+       gexf2{pos2}=findata2; %the infected for the first node are now calculated
        
        pos=pos+3;%18 %24
        
@@ -121,7 +137,7 @@ for i=1:cities
        %gexf
        
        for t=1:7
-           gefx2{pos2+t}=gefx{pos+t}; %
+           gexf2{pos2+t}=gexf{pos+t}; %
        end
        
        pos2=pos2+7;%40
@@ -131,16 +147,16 @@ end
 
 %Copies the rest of the template gexf
 
-for y=0:length(gefx)-pos
-gefx2{pos2+y-1}=gefx{pos+y};
+for y=0:length(gexf)-pos
+gexf2{pos2+y-1}=gexf{pos+y};
 end
 
 %The collected data is now exported into a new gexf file
 
 file_1 = fopen('500dynamic.gexf','w');
 
-for u=1:length(gefx2)
-    fprintf(file_1,gefx2{u}); 
+for u=1:length(gexf2)
+    fprintf(file_1,gexf2{u}); 
     fprintf(file_1,'\n');
 end
 
