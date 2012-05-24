@@ -2,7 +2,7 @@
 
 function FINAL_SIMULATION_whole_run
 
-parfor b=1:500
+parfor b=1:1
     
     %load network
     
@@ -45,10 +45,10 @@ parfor b=1:500
         
     end
     
-    %  out_file_name = 'exp21.txt';
-    %  out_file_name(5) = int2str(b);
-    %  dlmwrite(out_file_name,output_array);
-    generate_output(output_array, tot_pop,cities,root,edges,b);
+     out_file_name = 'exp61new.txt';
+     out_file_name(5) = int2str(b);
+     dlmwrite(out_file_name,output_array);
+    %generate_output(output_array, tot_pop,cities,root,edges,b);
     
 end
 end
