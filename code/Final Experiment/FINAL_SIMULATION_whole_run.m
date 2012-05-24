@@ -2,7 +2,8 @@
 
 function FINAL_SIMULATION_whole_run
 
-parfor b=570:670
+
+parfor b=1:500
     
     %load network
     

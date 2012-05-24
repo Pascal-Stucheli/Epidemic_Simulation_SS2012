@@ -2,16 +2,16 @@
 
 function FINAL_SIMULATION_degree_correlation
 
-parfor b=200:250
+parfor b=1:500
     
     %load network
     
     cities = dlmread('cities.txt');
-        edges = dlmread('edges.txt');
+    edges = dlmread('edges.txt');
     tot_T = round(dlmread('tot_T.txt')/100);
     
     tot_degree = 0;
-    while tot_degree < 150
+    %while tot_degree < 150
         %Set random infection for this experiment
         root= unidrnd(length(cities(:,1)));
         connections = find(edges == root);
@@ -28,7 +28,7 @@ parfor b=200:250
             end
             tot_degree = tot_degree + cities(working_node,1);
         end
-    end
+    %end
     cities(root,3)=1;
     
     
@@ -237,7 +237,7 @@ for i = 1:length(connections)
 end
 output_degree(1) = tot_degree;
 output_degree(2) = t;
-degree_corr_name='degre4_corr000.txt';
+degree_corr_name='degre7_corr000.txt';
 degree_corr_name(15-length(bstr):14)=bstr;
 dlmwrite(degree_corr_name,output_degree);
 
