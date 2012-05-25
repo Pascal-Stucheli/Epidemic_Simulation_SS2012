@@ -24,88 +24,88 @@ clear all
 % hold off
 
 %% 10% Infected Cities
-figure(2)
-hold on
-percentage = zeros(1,960);
-n = 1;
-for i = 1:999
-    try
-        bstr = int2str(i);
-        percentage_name='percent_10_total_000.txt';
-        percentage_name(21-length(bstr):20)=bstr;
-        percentage(n,:) = dlmread(percentage_name);
-        %         if mod(n,5) == 0
-        %         plot((1:960)/12,percentage(n,:),'LineWidth', 1)
-        %         end
-        n = n + 1;
-    end
-end
-
-for i = 1:length(percentage(1,:))
-    percentage_mean(i) = mean(percentage(:,i));
-    percent_stdev(i) = std(percentage(:,i));
-    percent_intp(i)= percentage_mean(i)+percent_stdev(i)*1.65;
-    percent_intm(i) = percentage_mean(i)-percent_stdev(i)*1.65;
-
-end
-
-hold on
-for i = 1:126
-    for q = 1:10000
-        z(i,q+1) = find(percentage(i,:) >= q, 1, 'first' );
-    end
-    %    plot(z(i,:)/12)
-end
-
-for i = 1:10000
-    zmean(i) = mean(z(:,i));
-    zstdev(i) = std(z(:,i));
-    zeip(i) = 1.6688*zstdev(i) + zmean(i);
-    zeim(i) = -1.6688*zstdev(i) + zmean(i);
-end
-% plot(zmean(:)/12,'r')
-% plot(zeip(:)/12,'r')
-% plot(zeim(:)/12,'r')
-
-
-
-permeaninv = 0;
-for q = 1:960
-    try
-        permeaninv(q) = find(zmean(:) >= q, 1, 'first' );
-    catch
-        permeaninv(q) = 10000;
-    end
-end
-for q = 1:960
-    try
-        pereipinv(q) = find(zeip(:) >= q, 1, 'first' );
-    catch
-        pereipinv(q) = 10000;
-    end
-end
-
-for q = 1:960
-    try
-        pereiminv(q) = find(zeim(:) >= q, 1, 'first' );
-    catch
-        pereiminv(q) = 10000;
-    end
-end
-
-figure(2)
-box on
-xlim([25 80])
-ylim([0 10500])
-%ylim([0 11000])
-
-ylabel('Cities with at least 10% infected','FontSize',14)
-xlabel('Time [d]','FontSize',14)
-
-hold on
-plot((1:960)/12,permeaninv,'k','LineWidth',2)
-plot((1:960)/12,pereipinv,'--b','LineWidth',2)
-plot((1:960)/12,pereiminv,'--b','LineWidth',2)
+% figure(2)
+% hold on
+% percentage = zeros(1,960);
+% n = 1;
+% for i = 1:999
+%     try
+%         bstr = int2str(i);
+%         percentage_name='percent_10_total_000.txt';
+%         percentage_name(21-length(bstr):20)=bstr;
+%         percentage(n,:) = dlmread(percentage_name);
+%         %         if mod(n,5) == 0
+%         %         plot((1:960)/12,percentage(n,:),'LineWidth', 1)
+%         %         end
+%         n = n + 1;
+%     end
+% end
+% 
+% for i = 1:length(percentage(1,:))
+%     percentage_mean(i) = mean(percentage(:,i));
+%     percent_stdev(i) = std(percentage(:,i));
+%     percent_intp(i)= percentage_mean(i)+percent_stdev(i)*1.65;
+%     percent_intm(i) = percentage_mean(i)-percent_stdev(i)*1.65;
+% 
+% end
+% 
+% hold on
+% for i = 1:126
+%     for q = 1:10000
+%         z(i,q+1) = find(percentage(i,:) >= q, 1, 'first' );
+%     end
+%     %    plot(z(i,:)/12)
+% end
+% 
+% for i = 1:10000
+%     zmean(i) = mean(z(:,i));
+%     zstdev(i) = std(z(:,i));
+%     zeip(i) = 1.6688*zstdev(i) + zmean(i);
+%     zeim(i) = -1.6688*zstdev(i) + zmean(i);
+% end
+% % plot(zmean(:)/12,'r')
+% % plot(zeip(:)/12,'r')
+% % plot(zeim(:)/12,'r')
+% 
+% 
+% 
+% permeaninv = 0;
+% for q = 1:960
+%     try
+%         permeaninv(q) = find(zmean(:) >= q, 1, 'first' );
+%     catch
+%         permeaninv(q) = 10000;
+%     end
+% end
+% for q = 1:960
+%     try
+%         pereipinv(q) = find(zeip(:) >= q, 1, 'first' );
+%     catch
+%         pereipinv(q) = 10000;
+%     end
+% end
+% 
+% for q = 1:960
+%     try
+%         pereiminv(q) = find(zeim(:) >= q, 1, 'first' );
+%     catch
+%         pereiminv(q) = 10000;
+%     end
+% end
+% 
+% figure(2)
+% box on
+% xlim([25 80])
+% ylim([0 10500])
+% %ylim([0 11000])
+% 
+% ylabel('Cities with at least 10% infected','FontSize',14)
+% xlabel('Time [d]','FontSize',14)
+% 
+% hold on
+% plot((1:960)/12,permeaninv,'k','LineWidth',2)
+% plot((1:960)/12,pereipinv,'--b','LineWidth',2)
+% plot((1:960)/12,pereiminv,'--b','LineWidth',2)
 
 %% Ratio
 
@@ -219,36 +219,36 @@ plot((1:960)/12,pereiminv,'--b','LineWidth',2)
 
 %% degree correlation
 
-% n = 1;
-% degre2_correlation = [0 0];
-% for i = 1:999
-%     try
-%         bstr = int2str(i);
-%         degre2_corr_name='degre7_corr000.txt';
-%         degre2_corr_name(15-length(bstr):14)=bstr;
-%         degre2_correlation(n,:) = dlmread(degre2_corr_name);
-%         n = n + 1;
-%     end
-% end
-%
-% figure(4)
-% set(gca,'FontSize',14)
-% x = degre2_correlation(:,1);
-% y = degre2_correlation(:,2);
-%
-% plot(x,y,'sb','MarkerSize',2,'MarkerFaceColor','b')
-% hold on
-%
-% deg = min(x):0.1:max(x);
-% q = 789.7*deg.^(-0.1128);
-% plot(deg,q,'k', 'LineWidth',2)
-% xlim([min(x)*0.9,max(x)*1.1])
-%  ylabel('Time until at least 20 cities are infected [d]')
-% xlabel('Degree of seed and 1st generation surrounding nodes [degree]')
-%
-%
-% box on
-% hold off
+n = 1;
+degre2_correlation = [0 0];
+for i = 1:999
+    try
+        bstr = int2str(i);
+        degre2_corr_name='degre7_corr000.txt';
+        degre2_corr_name(15-length(bstr):14)=bstr;
+        degre2_correlation(n,:) = dlmread(degre2_corr_name);
+        n = n + 1;
+    end
+end
+
+figure(4)
+set(gca,'FontSize',14)
+x = degre2_correlation(:,1);
+y = degre2_correlation(:,2);
+
+plot(x,y,'sb','MarkerSize',2,'MarkerFaceColor','b')
+hold on
+
+deg = min(x):0.1:max(x);
+q = 789.7*deg.^(-0.1128);
+plot(deg,q,'k', 'LineWidth',2)
+xlim([min(x)*0.9,max(x)*1.1])
+ ylabel('Time until at least 20 cities are infected [d]')
+xlabel('Degree of seed and 1st generation surrounding nodes [degree]')
+
+
+box on
+hold off
 
 %% distance correlation
 
