@@ -109,90 +109,90 @@ clear all
 
 %% Ratio
 
-% figure(3)
-% 
-% %semilogy(1,1)
-% hold on
-% n = 1;
-% ratio = zeros(1,960);
-% 
-% for i = 1:999
-%     try
-%         bstr = int2str(i);
-%         ratio_name='ratio_2nd_000.txt';
-%         ratio_name(14-length(bstr):13)=bstr;
-%         ratio(n,:) = dlmread(ratio_name);
-%         if mod(n,1) == 0
-%         plot((1:length(ratio(1,:)))/12,ratio(n,:)*92854020)
-%         end
-%         global_outbreak(n)=min(find(ratio(n,:) >= 1000/92854020));
-%         n = n + 1;
-%     end
-% end
-% mi=mean(global_outbreak(:))/12
-% st=std(global_outbreak(:))/12;
-% exp_range_fact = st*2*tcdf(0.975,147)
-% %xlim([0 80])
-% plot(mi+exp_range_fact,1:1000,'or')
-% plot(mi-exp_range_fact,1:1000,'or')
-% ylim([0 1000])
-% 
-% for i = 1:147
-%     g = 1;
-%     for q = 0:0.001:1
-%         try
-%             inv{i}(1,g) = find(ratio(i,:) >= q, 1, 'first' );
-%             inv{i}(2,g) = q;
-%             g = g+1;
-%         catch
-%             g = g+1;
-%             %             inv{i}(1,g) = NaN;
-%             %             inv{i}(2,g) = q;
-%         end
-%     end
-% end
-% t(1001,2) = 0;
-% for g = 1:147
-%     for i = 1:length(inv{g}(1,:))
-%         %try
-%         t(i,1) = t(i,1) + inv{g}(1,i);
-%         t(i,2) = t(i,2) + 1;
-%         %end
-%     end
-% end
-% 
-% for i = 1:length(t(:,1))
-%     mea(i) = t(i,1)/t(i,2);
-%     
-%     if  t(i,2) > 0
-%         sum(i) = 0;
-%     for g = 1:147
-%         try
-%             sum(i) = sum(i) + (inv{g}(1,i)-mea(i))^2;
-%         end
-%     end
-%         expfact(i) = sqrt(1/(t(i,2)-1)*sum(i))*2*tcdf(0.975,t(i,2));
-%     else 
-%         expfact(i) = 0;
-%     end
-%         expmin(i) = mea(i) - expfact(i);
-%         expmax(i) = mea(i) + expfact(i);
-%     
-% end
-% 
-% for i = 1:147
-%     %plot(inv{i}(1,:))
-% end
-% plot(mea(:)/12,(1:length(mea(:)))/1000,'k','LineWidth',2)
-% plot(expmin(:)/12,(1:length(expmin(:)))/1000,'--b','LineWidth',2)
-% plot(expmax(:)/12,(1:length(expmax(:)))/1000,'--b','LineWidth',2)
-% set(gca,'FontSize',14)
-%  xlim([25 80])
-%  ylim([0 1.1])
-%  box on
-%   ylabel('Ratio of global infected over total population')
-%  xlabel('Time [d]')
-% hold off
+figure(3)
+
+%semilogy(1,1)
+hold on
+n = 1;
+ratio = zeros(1,960);
+
+for i = 1:999
+    try
+        bstr = int2str(i);
+        ratio_name='ratio_2nd_000.txt';
+        ratio_name(14-length(bstr):13)=bstr;
+        ratio(n,:) = dlmread(ratio_name);
+        if mod(n,10) == 0
+        %plot((1:length(ratio(1,:)))/12,ratio(n,:)*92854020,'LineWidth',2)
+        end
+        global_outbreak(n)=min(find(ratio(n,:) >= 1000/92854020));
+        n = n + 1;
+    end
+end
+mi=mean(global_outbreak(:))/12
+st=std(global_outbreak(:))/12;
+exp_range_fact = st*2*tcdf(0.975,147)
+xlim([0 80])
+plot(mi+exp_range_fact,1:1000,'or')
+plot(mi-exp_range_fact,1:1000,'or')
+ylim([0 1000])
+
+for i = 1:147
+    g = 1;
+    for q = 0:0.001:1
+        try
+            inv{i}(1,g) = find(ratio(i,:) >= q, 1, 'first' );
+            inv{i}(2,g) = q;
+            g = g+1;
+        catch
+            g = g+1;
+            %             inv{i}(1,g) = NaN;
+            %             inv{i}(2,g) = q;
+        end
+    end
+end
+t(1001,2) = 0;
+for g = 1:147
+    for i = 1:length(inv{g}(1,:))
+        %try
+        t(i,1) = t(i,1) + inv{g}(1,i);
+        t(i,2) = t(i,2) + 1;
+        %end
+    end
+end
+
+for i = 1:length(t(:,1))
+    mea(i) = t(i,1)/t(i,2);
+    
+    if  t(i,2) > 0
+        sum(i) = 0;
+    for g = 1:147
+        try
+            sum(i) = sum(i) + (inv{g}(1,i)-mea(i))^2;
+        end
+    end
+        expfact(i) = sqrt(1/(t(i,2)-1)*sum(i))*2*tcdf(0.975,t(i,2));
+    else 
+        expfact(i) = 0;
+    end
+        expmin(i) = mea(i) - expfact(i);
+        expmax(i) = mea(i) + expfact(i);
+    
+end
+
+for i = 1:147
+    %plot(inv{i}(1,:))
+end
+plot(mea(:)/12,(1:length(mea(:)))/1000,'k','LineWidth',2)
+plot(expmin(:)/12,(1:length(expmin(:)))/1000,'--b','LineWidth',2)
+plot(expmax(:)/12,(1:length(expmax(:)))/1000,'--b','LineWidth',2)
+set(gca,'FontSize',14)
+xlim([25 80])
+ ylim([0 1.1])
+ box on
+   ylabel('Global infected')
+  xlabel('Time [d]')
+hold off
 % %% Combined Graph
 % figure(5)
 % hold on
@@ -219,36 +219,36 @@ clear all
 
 %% degree correlation
 
-n = 1;
-degre2_correlation = [0 0];
-for i = 1:999
-    try
-        bstr = int2str(i);
-        degre2_corr_name='degre7_corr000.txt';
-        degre2_corr_name(15-length(bstr):14)=bstr;
-        degre2_correlation(n,:) = dlmread(degre2_corr_name);
-        n = n + 1;
-    end
-end
-
-figure(4)
-set(gca,'FontSize',14)
-x = degre2_correlation(:,1);
-y = degre2_correlation(:,2);
-
-plot(x,y,'sb','MarkerSize',2,'MarkerFaceColor','b')
-hold on
-
-deg = min(x):0.1:max(x);
-q = 789.7*deg.^(-0.1128);
-plot(deg,q,'k', 'LineWidth',2)
-xlim([min(x)*0.9,max(x)*1.1])
- ylabel('Time until at least 20 cities are infected [d]')
-xlabel('Degree of seed and 1st generation surrounding nodes [degree]')
-
-
-box on
-hold off
+% n = 1;
+% degre2_correlation = [0 0];
+% for i = 1:999
+%     try
+%         bstr = int2str(i);
+%         degre2_corr_name='degre7_corr000.txt';
+%         degre2_corr_name(15-length(bstr):14)=bstr;
+%         degre2_correlation(n,:) = dlmread(degre2_corr_name);
+%         n = n + 1;
+%     end
+% end
+% 
+% figure(4)
+% set(gca,'FontSize',14)
+% x = degre2_correlation(:,1);
+% y = degre2_correlation(:,2);
+% 
+% plot(x,y,'sb','MarkerSize',2,'MarkerFaceColor','b')
+% hold on
+% 
+% deg = min(x):0.1:max(x);
+% q = 789.7*deg.^(-0.1128);
+% plot(deg,q,'k', 'LineWidth',2)
+% xlim([min(x)*0.9,max(x)*1.1])
+%  ylabel('Time until at least 20 cities are infected [d]')
+% xlabel('Degree of seed and 1st generation surrounding nodes [degree]')
+% 
+% 
+% box on
+% hold off
 
 %% distance correlation
 
