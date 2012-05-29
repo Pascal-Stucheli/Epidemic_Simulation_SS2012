@@ -1,0 +1,17 @@
+Introduction - händer no meh idee?
+Simulation overview - chönt me no was detailiere?
+Results - besser beschriebe?
+Discussion
+
+Aufteilung für die präsentation:
+
+Introduction: Jordi???
+Sim. overview:Jordi???
+Network generation: jordi
+Infections: Stü
+Traffic: Yannick
+Approximations: Stü???
+Results1:Stü???
+Results2: Yannick???
+movie: jordi
+Discussion: Yannick???
